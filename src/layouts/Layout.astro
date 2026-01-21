@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import { Facebook, Instagram, Menu, X, Phone, Mail, MapPin } from 'lucide-astro';
+import Analytics from '@vercel/analytics/astro'
+
 
 interface Props {
 	title: string;
@@ -272,5 +274,6 @@ const schemaOrg = {
 				});
 			});
 		</script>
+        <Analytics />
 	</body>
 </html>
