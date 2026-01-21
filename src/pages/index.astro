@@ -424,8 +424,8 @@ const nearbyPlaces = [
         
         <!-- Galería de imágenes -->
         <div>
-          <div class="relative rounded-2xl overflow-hidden shadow-xl group card-hover" data-carousel>
-            <div class="carousel-container flex overflow-x-auto snap-x snap-mandatory scrollbar-hide aspect-[4/3] min-h-[350px] md:min-h-[420px]" data-carousel-track>
+          <div class="relative rounded-2xl overflow-hidden shadow-xl group card-hover w-full max-w-full" data-carousel>
+            <div class="carousel-container flex overflow-x-auto snap-x snap-mandatory scrollbar-hide aspect-[4/3] w-full" data-carousel-track>
               {motorhomeData.images.map((img, imgIndex) => (
                 <div class="carousel-slide snap-center shrink-0 w-full h-full" data-index={imgIndex}>
                   <img 
