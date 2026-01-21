@@ -1,11 +1,213 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { Check, User, MapPin, Mail, MessageCircle, Phone } from 'lucide-astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// Datos de las cabañas para iterar (migrado del HTML original)
+const cabins = [
+  {
+    title: "Cabaña de 2 Dormitorios",
+    images: [
+      "/wp-content/uploads/2019/08/Foto-2-Lomatanzas-exterior-300x225.jpg",
+      "/wp-content/uploads/2019/08/exterior15-569x426.jpg",
+      "/wp-content/uploads/2019/08/exterior6-569x426.jpg",
+      "/wp-content/uploads/2021/11/IMG-20210614-WA0049-800x600.jpg"
+    ],
+    features: ["4-5 Personas", "2 Dormitorios", "2 Baños", "TV Cable", "Parrilla", "Estacionamiento"]
+  },
+  {
+    title: "Cabaña de 1 Dormitorio",
+    images: [
+      "/wp-content/uploads/2022/07/CABANA-1D-F1-800x600.jpeg",
+      "/wp-content/uploads/2022/07/CABANA-1D-F2-800x600.jpeg",
+      "/wp-content/uploads/2021/11/20211029_182222-800x600.jpg"
+    ],
+    features: ["2-3 Personas", "1 Dormitorio", "1 Baño", "TV Cable", "Parrilla", "Estacionamiento"]
+  },
+  {
+      title: "Sitios de Motorhome",
+      images: [
+          "/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-09-at-6.34.26-PM-1-600x400.jpeg",
+          "/wp-content/uploads/2022/07/WhatsApp-Image-2022-07-09-at-6.34.27-PM-600x400.jpeg"
+      ],
+      features: ["Agua Potable", "Electricidad", "Baños y Duchas", "Parrilla"]
+  }
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Inicio - Lomatanzas">
+  
+  <!-- Hero Section -->
+  <section class="relative h-[600px] w-full bg-gray-900 group">
+    <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('/wp-content/uploads/2022/08/IMG-20220808-WA0026.jpg');"></div>
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="relative h-full flex flex-col justify-center items-center text-white text-center px-4">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-md">Bienvenidos a Lomatanzas</h1>
+      <p class="text-xl md:text-2xl mb-8 font-light">Family Lodge & Motorhome Park</p>
+      <a href="#precios-038-reservas" class="bg-[#57bcca] hover:bg-[#4aa8b6] text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 uppercase tracking-wider text-sm">
+        Reservar Ahora
+      </a>
+    </div>
+  </section>
+
+  <!-- Amenities -->
+  <section id="comodidades" class="py-16 bg-white">
+      <div class="container-custom">
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center text-gray-600">
+              <div class="flex flex-col items-center gap-2">
+                  <img src="/wp-content/uploads/2018/03/jacuzzi.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Spa" />
+                  <span class="font-semibold text-sm">SPA & Jacuzzi</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                  <img src="/wp-content/uploads/2022/04/wifi.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Wifi" />
+                  <span class="font-semibold text-sm">WiFi Fibra</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                  <img src="/wp-content/uploads/2018/03/parrilla.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Quinchos" />
+                  <span class="font-semibold text-sm">Quinchos</span>
+              </div>
+              <div class="flex flex-col items-center gap-2">
+                  <img src="/wp-content/uploads/2018/03/mapa.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Trekking" />
+                  <span class="font-semibold text-sm">Entorno Natural</span>
+              </div>
+               <div class="flex flex-col items-center gap-2">
+                  <img src="/wp-content/uploads/2018/03/motorhome.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Motorhome" />
+                  <span class="font-semibold text-sm">Motorhome</span>
+              </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Gallery Section (Accommodations) -->
+  <section id="galeria-de-fotos" class="py-16 bg-gray-50">
+    <div class="container-custom">
+        <h2 class="text-3xl font-bold text-center mb-12 uppercase tracking-wide">Nuestras Instalaciones</h2>
+        
+        {cabins.map((cabin) => (
+            <div class="mb-20 last:mb-0">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="order-2 md:order-1">
+                        <h3 class="text-2xl font-bold mb-6 text-[#333] border-l-4 border-[#3366ff] pl-4">{cabin.title}</h3>
+                        <ul class="space-y-3 mb-8">
+                            {cabin.features.map(feature => (
+                                <li class="flex items-center text-gray-600">
+                                    <Check class="text-[#3366ff] mr-3 w-5 h-5" /> {feature}
+                                </li>
+                            ))}
+                        </ul>
+                        <a href="#contacto" class="inline-block text-[#57bcca] border-2 border-[#57bcca] px-6 py-2 rounded hover:bg-[#57bcca] hover:text-white transition-colors font-semibold">
+                            Consultar Disponibilidad
+                        </a>
+                    </div>
+
+                    <!-- CSS-only Slider with Snap -->
+                    <div class="order-1 md:order-2">
+                        <div class="relative w-full aspect-[4/3] rounded-lg shadow-xl overflow-hidden group">
+                           <div class="flex overflow-x-auto snap-x snap-mandatory h-full w-full scrollbar-hide">
+                                {cabin.images.map(img => (
+                                    <div class="snap-center shrink-0 w-full h-full">
+                                        <img src={img} alt={cabin.title} class="w-full h-full object-cover" />
+                                    </div>
+                                ))}
+                           </div>
+                           <div class="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
+                               Desliza para ver más &rarr;
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        ))}
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="precios-038-reservas" class="py-16 bg-white">
+      <div class="container-custom">
+          <h2 class="text-3xl font-bold text-center mb-12 uppercase">Precios</h2>
+          <div class="grid md:grid-cols-3 gap-8">
+              <!-- Pricing Card 1 -->
+              <div class="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow bg-gray-50/50">
+                  <h3 class="text-xl font-bold mb-6 text-center">Cabañas</h3>
+                  <ul class="space-y-6 text-gray-600">
+                      <li class="text-center">
+                          <span class="block text-sm font-semibold mb-1">1 Dormitorio / 1 Baño</span>
+                          <span class="text-3xl font-bold text-[#57bcca]">$90.000</span>
+                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
+                      </li>
+                      <li class="text-center border-t pt-6">
+                          <span class="block text-sm font-semibold mb-1">2 Dormitorios / 2 Baños</span>
+                          <span class="text-3xl font-bold text-[#57bcca]">$100.000</span>
+                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
+                      </li>
+                  </ul>
+              </div>
+
+               <!-- Pricing Card 2 -->
+               <div class="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow bg-gray-50/50">
+                  <h3 class="text-xl font-bold mb-6 text-center">Motorhome</h3>
+                  <ul class="space-y-6 text-gray-600">
+                      <li class="text-center">
+                          <span class="block text-sm font-semibold mb-1">Parking (hasta 5 personas)</span>
+                          <span class="text-3xl font-bold text-[#57bcca]">$55.000</span>
+                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
+                      </li>
+                      <li class="text-center border-t pt-6">
+                          <span class="block text-sm font-semibold mb-1">Parking Mensual</span>
+                          <span class="text-3xl font-bold text-[#57bcca]">$220.000</span>
+                           <span class="block text-xs text-gray-500 mt-1">Hasta 5 personas</span>
+                      </li>
+                       <li class="flex justify-between text-sm border-t pt-6">
+                          <span>Adicional por persona</span> 
+                          <span class="font-bold">$10.000</span>
+                      </li>
+                  </ul>
+              </div>
+              
+               <!-- Info Card -->
+               <div class="bg-[#3366ff] text-white rounded-lg p-8 flex flex-col justify-center text-center">
+                  <h3 class="text-2xl font-bold mb-4">Reservas</h3>
+                  <p class="mb-6">Para confirmar su reserva se solicita un abono del 50% del total.</p>
+                  <a href="/condiciones" class="underline hover:text-gray-200">Ver políticas de cancelación</a>
+               </div>
+          </div>
+      </div>
+  </section>
+
+  <!-- Contact / Map -->
+  <section id="contacto" class="relative bg-gray-100">
+      <div class="h-[400px] w-full grayscale">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3314.394625292454!2d-71.86551848479093!3d-33.96119598063079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96637651a140f065%3A0xe54911d0a5146039!2sLomatanzas!5e0!3m2!1ses!2scl!4v1524278473855" 
+            width="100%" 
+            height="100%" 
+            style="border:0" 
+            allowfullscreen 
+            loading="lazy">
+          </iframe>
+      </div>
+      <div class="container-custom py-12">
+          <div class="bg-white p-8 md:p-12 rounded-lg shadow-xl md:-mt-32 relative z-10 grid md:grid-cols-2 gap-12">
+              <div>
+                  <h3 class="text-2xl font-bold mb-6">Contáctanos</h3>
+                  <div class="space-y-4 text-gray-600">
+                      <p class="flex items-center"><MapPin class="mr-3 w-5 h-5 text-[#57bcca]" /> Lomatanzas, Navidad, VI Región</p>
+                      <p class="flex items-center"><Mail class="mr-3 w-5 h-5 text-[#57bcca]" /> lomatanzas@gmail.com</p>
+                      <p class="flex items-center"><Phone class="mr-3 w-5 h-5 text-[#57bcca]" /> +56 9 8289 2752</p>
+                  </div>
+              </div>
+              <div>
+                  <h3 class="text-2xl font-bold mb-6">Escríbenos</h3>
+                  <div class="flex gap-4">
+                      <a href="https://wa.me/56982892752" class="flex-1 bg-green-500 text-white py-3 rounded text-center hover:bg-green-600 transition-colors font-bold flex items-center justify-center">
+                          <MessageCircle class="mr-2 w-5 h-5" /> WhatsApp
+                      </a>
+                      <a href="mailto:lomatanzas@gmail.com" class="flex-1 bg-blue-500 text-white py-3 rounded text-center hover:bg-blue-600 transition-colors font-bold flex items-center justify-center">
+                          <Mail class="mr-2 w-5 h-5" /> Email
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </section>
 </Layout>

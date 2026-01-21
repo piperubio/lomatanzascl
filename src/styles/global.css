@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Open Sans', sans-serif;
+  
+  --color-primary: #3366ff;
+  --color-secondary: #57bcca;
+  --color-dark: #000000;
+  --color-dark-gray: #0f0f0f;
+  --color-light-gray: #f1f1f1;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+}
+
+/* Utilidad para simular el contenedor fluido de bootstrap viejo pero en container moderno */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4;
+}
