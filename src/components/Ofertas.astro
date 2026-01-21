@@ -1,0 +1,44 @@
+---
+/**
+ * Ofertas Component
+ * Dirige a los usuarios al Instagram para ver ofertas y promociones
+ */
+
+import { Instagram, Tag, Bell } from 'lucide-astro';
+
+const instagramUrl = "https://www.instagram.com/lomatanzasfamilylodge/";
+---
+
+<section id="ofertas" class="py-10 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400">
+  <div class="container-custom">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      
+      <!-- Contenido -->
+      <div class="flex items-center gap-4 text-white">
+        <div class="p-3 bg-white/20 backdrop-blur-sm rounded-full">
+          <Tag class="w-7 h-7" />
+        </div>
+        <div>
+          <h2 class="text-xl md:text-2xl font-display font-bold text-white">
+            Ofertas y Descuentos Exclusivos
+          </h2>
+          <p class="text-white/90 text-sm md:text-base">
+            Publicamos promociones especiales en nuestras historias de Instagram
+          </p>
+        </div>
+      </div>
+
+      <!-- CTA Instagram -->
+      <a 
+        href={instagramUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-3 bg-white text-gray-900 font-semibold px-6 py-3 rounded-full hover:bg-gray-100 transition-all hover:scale-105 shadow-lg group"
+      >
+        <Instagram class="w-5 h-5 text-pink-500" />
+        <span>Ver Ofertas en Instagram</span>
+        <Bell class="w-4 h-4 text-orange-500 animate-pulse" />
+      </a>
+    </div>
+  </div>
+</section>

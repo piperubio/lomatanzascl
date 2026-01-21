@@ -1,213 +1,820 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { Check, User, MapPin, Mail, MessageCircle, Phone } from 'lucide-astro';
+import SocialProof from '../components/SocialProof.astro';
+import Ofertas from '../components/Ofertas.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import CondicionesModal from '../components/CondicionesModal.astro';
+import { Check, MapPin, Mail, MessageCircle, Phone, ArrowRight, Waves, Sun, Trees, Star, ChevronLeft, ChevronRight, Caravan, Zap, Droplets, Home, Users, Sparkles } from 'lucide-astro';
 
-// Datos de las cabañas para iterar (migrado del HTML original)
+// SEO: Page-specific metadata
+const pageTitle = "Cabañas en Matanzas | Lomatanzas Family Lodge - Frente a la Playa";
+const pageDescription = "Arrienda cabañas en Playa de Matanzas, Litoral Central de Chile. Family Lodge con spa, jacuzzi, WiFi fibra óptica y estacionamiento para motorhome. Reserva directo por WhatsApp.";
+
+// Datos de las cabañas (solo cabañas)
 const cabins = [
   {
+    id: "2dorm",
     title: "Cabaña de 2 Dormitorios",
+    subtitle: "Ideal para familias",
     images: [
       "/images/landscape/Foto-2-Lomatanzas-exterior-300x225.jpg",
       "/images/landscape/exterior15-569x426.jpg",
       "/images/landscape/exterior6-569x426.jpg",
-      "/images/gallery/IMG-20210614-WA0049-800x600.jpg"
+      "/images/gallery/IMG-20210614-WA0049-800x600.jpg",
+      "/images/cabins/Foto-7-Lomatanzas-interior-800x600.jpg",
+      "/images/gallery/20220409_131845-800x600.jpg",
+      "/images/gallery/IMG-20210614-WA0054-800x600.jpg",
+      "/images/cabins/Foto-10-Lomatanzas-interior-710x533.jpg",
+      "/images/cabins/Foto-6-Lomatanzas-interior-710x533.jpg",
+      "/images/landscape/Foto-13-Lomatanzas-exterior-800x600.jpg",
+      "/images/gallery/20210715_220455-800x600.jpg"
     ],
-    features: ["4-5 Personas", "2 Dormitorios", "2 Baños", "TV Cable", "Parrilla", "Estacionamiento"]
+    features: [
+      { text: "4-5 Personas", highlight: false },
+      { text: "2 Dormitorios", highlight: true },
+      { text: "2 Baños completos", highlight: false },
+      { text: "TV Cable", highlight: false },
+      { text: "Quincho con parrilla", highlight: false },
+      { text: "Estacionamiento privado", highlight: false }
+    ],
+    price: "$100.000",
+    priceNote: "por noche"
   },
   {
+    id: "1dorm",
     title: "Cabaña de 1 Dormitorio",
+    subtitle: "Perfecta para parejas",
     images: [
       "/images/cabins/CABANA-1D-F1-800x600.jpeg",
       "/images/cabins/CABANA-1D-F2-800x600.jpeg",
-      "/images/gallery/20211029_182222-800x600.jpg"
+      "/images/gallery/20211029_182222-800x600.jpg",
+      "/images/gallery/20211023_195044-e1656693214601-800x600.jpg",
+      "/images/gallery/20220408_195322-800x600.jpg",
+      "/images/gallery/20211029_182309-800x600.jpg",
+      "/images/gallery/20211029_182244-800x600.jpg",
+      "/images/gallery/20220624_121012-800x600.jpg"
     ],
-    features: ["2-3 Personas", "1 Dormitorio", "1 Baño", "TV Cable", "Parrilla", "Estacionamiento"]
+    features: [
+      { text: "2-3 Personas", highlight: false },
+      { text: "1 Dormitorio", highlight: true },
+      { text: "1 Baño completo", highlight: false },
+      { text: "TV Cable", highlight: false },
+      { text: "Quincho con parrilla", highlight: false },
+      { text: "Estacionamiento privado", highlight: false }
+    ],
+    price: "$90.000",
+    priceNote: "por noche"
+  }
+];
+
+// Datos de Motorhome/Camping (sección independiente)
+const motorhomeData = {
+  id: "motorhome",
+  title: "Sitios de Motorhome y Camper",
+  subtitle: "Camping Premium",
+  images: [
+    "/images/gallery/IMG-20230707-WA0026.jpg",
+    "/images/gallery/IMG-20230707-WA0021.jpg",
+    "/images/gallery/IMG-20230707-WA0023.jpg",
+    "/images/gallery/IMG-20230707-WA0022.jpg",
+    "/images/gallery/IMG-20230707-WA0025.jpg",
+    "/images/gallery/IMG-20230707-WA0024.jpg",
+    "/images/gallery/IMG-20230707-WA0019 (1).jpg",
+    "/images/gallery/IMG-20230707-WA0018.jpg",
+    "/images/gallery/IMG-20230707-WA0020.jpg"
+  ],
+  features: [
+    { text: "Hasta 5 personas", highlight: false },
+    { text: "Agua potable", highlight: true },
+    { text: "Conexión eléctrica 220V", highlight: true },
+    { text: "Baños y duchas calientes", highlight: false },
+    { text: "Quincho con parrilla", highlight: false },
+    { text: "Área exclusiva y tranquila", highlight: false },
+    { text: "WiFi disponible", highlight: false },
+    { text: "Acceso a spa/jacuzzi", highlight: false }
+  ],
+  price: "$55.000",
+  priceNote: "por noche",
+  monthlyPrice: "$220.000",
+  monthlyNote: "por mes"
+};
+
+// Amenities con iconos y descripciones
+const amenities = [
+  {
+    icon: "/images/amenities/jacuzzi.png",
+    title: "Spa & Jacuzzi",
+    description: "Relájate después de un día de playa"
   },
   {
-      title: "Sitios de Motorhome",
-      images: [
-          "/images/gallery/WhatsApp-Image-2022-07-09-at-6.34.26-PM-1-600x400.jpeg",
-          "/images/gallery/WhatsApp-Image-2022-07-09-at-6.34.27-PM-600x400.jpeg"
-      ],
-      features: ["Agua Potable", "Electricidad", "Baños y Duchas", "Parrilla"]
+    icon: "/images/amenities/wifi.png",
+    title: "WiFi Fibra 100Mbps",
+    description: "Conexión de alta velocidad"
+  },
+  {
+    icon: "/images/amenities/parrilla.png",
+    title: "Quinchos Equipados",
+    description: "Parrilla y mesón para asados"
+  },
+  {
+    icon: "/images/theme/mapa.png",
+    title: "Entorno Natural",
+    description: "Senderos y vistas al mar"
+  },
+  {
+    icon: "/images/amenities/motorhome.png",
+    title: "Parking Motorhome",
+    description: "Sitios con servicios completos"
   }
+];
+
+// Lugares cercanos para SEO local
+const nearbyPlaces = [
+  { name: "Playa de Matanzas", time: "5 min en auto", icon: Waves },
+  { name: "Punta de Lobos", time: "25 min en auto", icon: Waves },
+  { name: "Puertecillo", time: "15 min en auto", icon: Sun },
+  { name: "Acantilados de Pupuya", time: "20 min en auto", icon: Trees }
 ];
 ---
 
-<Layout title="Inicio - Lomatanzas">
+<Layout title={pageTitle} description={pageDescription}>
   
-  <!-- Hero Section -->
-  <section class="relative h-[600px] w-full bg-gray-900 group">
-    <div class="absolute inset-0 bg-cover bg-center opacity-60" style="background-image: url('/images/gallery/IMG-20220808-WA0026.jpg');"></div>
-    <div class="absolute inset-0 bg-black/30"></div>
-    <div class="relative h-full flex flex-col justify-center items-center text-white text-center px-4">
-      <h1 class="text-4xl md:text-6xl font-bold mb-4 drop-shadow-md">Bienvenidos a Lomatanzas</h1>
-      <p class="text-xl md:text-2xl mb-8 font-light">Family Lodge & Motorhome Park</p>
-      <a href="#precios-038-reservas" class="bg-[#57bcca] hover:bg-[#4aa8b6] text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 uppercase tracking-wider text-sm">
-        Reservar Ahora
-      </a>
+  <!-- HERO SECTION -->
+  <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+      <img 
+        src="/images/gallery/IMG-20220808-WA0026.jpg" 
+        alt="Vista aérea de Lomatanzas y la Playa de Matanzas" 
+        class="w-full h-full object-cover"
+        loading="eager"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
     </div>
-  </section>
-
-  <!-- Amenities -->
-  <section id="comodidades" class="py-16 bg-white">
-      <div class="container-custom">
-          <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-center text-gray-600">
-              <div class="flex flex-col items-center gap-2">
-                  <img src="/images/amenities/jacuzzi.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Spa" />
-                  <span class="font-semibold text-sm">SPA & Jacuzzi</span>
-              </div>
-              <div class="flex flex-col items-center gap-2">
-                  <img src="/images/amenities/wifi.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Wifi" />
-                  <span class="font-semibold text-sm">WiFi Fibra</span>
-              </div>
-              <div class="flex flex-col items-center gap-2">
-                  <img src="/images/amenities/parrilla.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Quinchos" />
-                  <span class="font-semibold text-sm">Quinchos</span>
-              </div>
-              <div class="flex flex-col items-center gap-2">
-                  <img src="/images/theme/mapa.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Trekking" />
-                  <span class="font-semibold text-sm">Entorno Natural</span>
-              </div>
-               <div class="flex flex-col items-center gap-2">
-                  <img src="/images/amenities/motorhome.png" class="h-16 opacity-70 hover:opacity-100 transition-opacity" alt="Motorhome" />
-                  <span class="font-semibold text-sm">Motorhome</span>
-              </div>
-          </div>
+    
+    <!-- Decorative Wave -->
+    <div class="absolute bottom-0 left-0 right-0">
+      <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+        <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
+      </svg>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="container-custom relative z-10 text-center text-white py-20">
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-sm font-medium mb-6 animate-fade-in border border-white/30">
+        <MapPin class="w-4 h-4 text-amber-300" />
+        <span class="text-white">Playa de Matanzas, Litoral Central</span>
       </div>
-  </section>
-
-  <!-- Gallery Section (Accommodations) -->
-  <section id="galeria-de-fotos" class="py-16 bg-gray-50">
-    <div class="container-custom">
-        <h2 class="text-3xl font-bold text-center mb-12 uppercase tracking-wide">Nuestras Instalaciones</h2>
-        
-        {cabins.map((cabin) => (
-            <div class="mb-20 last:mb-0">
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <!-- Text Content -->
-                    <div class="order-2 md:order-1">
-                        <h3 class="text-2xl font-bold mb-6 text-[#333] border-l-4 border-[#3366ff] pl-4">{cabin.title}</h3>
-                        <ul class="space-y-3 mb-8">
-                            {cabin.features.map(feature => (
-                                <li class="flex items-center text-gray-600">
-                                    <Check class="text-[#3366ff] mr-3 w-5 h-5" /> {feature}
-                                </li>
-                            ))}
-                        </ul>
-                        <a href="#contacto" class="inline-block text-[#57bcca] border-2 border-[#57bcca] px-6 py-2 rounded hover:bg-[#57bcca] hover:text-white transition-colors font-semibold">
-                            Consultar Disponibilidad
-                        </a>
-                    </div>
-
-                    <!-- CSS-only Slider with Snap -->
-                    <div class="order-1 md:order-2">
-                        <div class="relative w-full aspect-[4/3] rounded-lg shadow-xl overflow-hidden group">
-                           <div class="flex overflow-x-auto snap-x snap-mandatory h-full w-full scrollbar-hide">
-                                {cabin.images.map(img => (
-                                    <div class="snap-center shrink-0 w-full h-full">
-                                        <img src={img} alt={cabin.title} class="w-full h-full object-cover" />
-                                    </div>
-                                ))}
-                           </div>
-                           <div class="absolute bottom-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
-                               Desliza para ver más &rarr;
-                           </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        ))}
+      
+      <!-- H1 con Keywords principales - Animación escalonada -->
+      <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold mb-6 leading-tight drop-shadow-lg [text-shadow:_0_2px_10px_rgb(0_0_0_/_40%)]">
+        <span class="text-white">
+          <span class="hero-word" style="animation-delay: 0ms">Cabañas</span>{" "}
+          <span class="hero-word" style="animation-delay: 80ms">y</span>{" "}
+          <span class="hero-word" style="animation-delay: 160ms">Alojamiento</span>{" "}
+          <span class="hero-word" style="animation-delay: 240ms">en</span>
+        </span>
+        <span class="block text-amber-300 mt-2 drop-shadow-lg">
+          <span class="hero-word" style="animation-delay: 350ms">Playa</span>{" "}
+          <span class="hero-word" style="animation-delay: 430ms">de</span>{" "}
+          <span class="hero-word" style="animation-delay: 510ms">Matanzas</span>
+        </span>
+      </h1>
+      
+      <!-- Subtítulo con beneficios -->
+      <p class="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-500">
+        Family Lodge con spa, jacuzzi, WiFi fibra y estacionamiento para motorhome. 
+        <strong class="text-amber-300">Tu escape perfecto cerca al mar.</strong>
+      </p>
+      
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up delay-600">
+        <a 
+          href="https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20en%20Lomatanzas" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="shine-effect inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-display font-bold text-white bg-[#25D366] hover:bg-[#20BA5A] shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 ease-out text-lg"
+        >
+          <MessageCircle class="w-5 h-5" />
+          Reservar por WhatsApp
+        </a>
+        <a href="#cabanas" class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-display font-semibold border-2 border-white text-white bg-transparent hover:bg-white hover:text-gray-900 transition-all duration-300 ease-out">
+          Ver Cabañas
+          <ArrowRight class="w-4 h-4" />
+        </a>
+      </div>
+      
+      <!-- Trust badge -->
+      <div class="mt-10 flex items-center justify-center gap-2 text-white text-sm animate-fade-in delay-700">
+        <div class="flex space-x-1">
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+          <Star class="w-4 h-4 text-amber-400 fill-amber-400" />
+        </div>
+        <span class="drop-shadow-md">+5 años recibiendo familias</span>
+      </div>
     </div>
   </section>
 
-  <!-- Pricing -->
-  <section id="precios-038-reservas" class="py-16 bg-white">
-      <div class="container-custom">
-          <h2 class="text-3xl font-bold text-center mb-12 uppercase">Precios</h2>
-          <div class="grid md:grid-cols-3 gap-8">
-              <!-- Pricing Card 1 -->
-              <div class="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow bg-gray-50/50">
-                  <h3 class="text-xl font-bold mb-6 text-center">Cabañas</h3>
-                  <ul class="space-y-6 text-gray-600">
-                      <li class="text-center">
-                          <span class="block text-sm font-semibold mb-1">1 Dormitorio / 1 Baño</span>
-                          <span class="text-3xl font-bold text-[#57bcca]">$90.000</span>
-                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
-                      </li>
-                      <li class="text-center border-t pt-6">
-                          <span class="block text-sm font-semibold mb-1">2 Dormitorios / 2 Baños</span>
-                          <span class="text-3xl font-bold text-[#57bcca]">$100.000</span>
-                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
-                      </li>
-                  </ul>
-              </div>
+  <!-- SOCIAL PROOF -->
+  <SocialProof />
 
-               <!-- Pricing Card 2 -->
-               <div class="border border-gray-200 rounded-lg p-8 hover:shadow-lg transition-shadow bg-gray-50/50">
-                  <h3 class="text-xl font-bold mb-6 text-center">Motorhome</h3>
-                  <ul class="space-y-6 text-gray-600">
-                      <li class="text-center">
-                          <span class="block text-sm font-semibold mb-1">Parking (hasta 5 personas)</span>
-                          <span class="text-3xl font-bold text-[#57bcca]">$55.000</span>
-                          <span class="block text-xs text-gray-500 mt-1">Por Noche</span>
-                      </li>
-                      <li class="text-center border-t pt-6">
-                          <span class="block text-sm font-semibold mb-1">Parking Mensual</span>
-                          <span class="text-3xl font-bold text-[#57bcca]">$220.000</span>
-                           <span class="block text-xs text-gray-500 mt-1">Hasta 5 personas</span>
-                      </li>
-                       <li class="flex justify-between text-sm border-t pt-6">
-                          <span>Adicional por persona</span> 
-                          <span class="font-bold">$10.000</span>
-                      </li>
-                  </ul>
+  <!-- OFERTAS -->
+  <Ofertas />
+
+  <!-- AMENITIES SECTION -->
+  <section id="comodidades" class="section-padding bg-white">
+    <div class="container-custom">
+      <div class="text-center mb-12">
+        <div class="w-20 h-1 mx-auto mb-6 rounded-full bg-gradient-to-r from-primary to-secondary"></div>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-center mb-4 text-gray-900">Todo lo que Necesitas</h2>
+        <p class="text-lg md:text-xl text-center max-w-2xl mx-auto mb-12 text-warm-gray">
+          Comodidades pensadas para que disfrutes en familia
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8">
+        {amenities.map((amenity, index) => (
+          <div 
+            class="amenity-card group text-center p-6 rounded-2xl bg-white/50"
+            style={`animation-delay: ${index * 100}ms`}
+          >
+            <div class="relative inline-block mb-4">
+              <img 
+                src={amenity.icon} 
+                class="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110" 
+                alt={amenity.title}
+                loading="lazy"
+              />
+            </div>
+            <h3 class="font-display font-semibold text-gray-900 mb-1">{amenity.title}</h3>
+            <p class="text-sm text-gray-500">{amenity.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CABAÑAS SECTION - Producto Principal -->
+  <section id="cabanas" class="section-padding bg-gradient-to-b from-sand via-white to-sand">
+    <div class="container-custom">
+      <!-- Header destacado -->
+      <div class="text-center mb-16">
+        <div class="inline-flex items-center gap-2 bg-cyan-100 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+          <Home class="w-4 h-4" />
+          <span>Alojamiento Principal</span>
+        </div>
+        <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-center mb-4 text-gray-900">Nuestras Cabañas en Matanzas</h2>
+        <p class="text-lg md:text-xl text-center max-w-2xl mx-auto text-warm-gray">
+          Cabañas completamente equipadas con todas las comodidades para tu estadía perfecta frente al mar
+        </p>
+        
+        <!-- Highlights rápidos -->
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
+          <div class="flex items-center gap-2 text-gray-600">
+            <Sparkles class="w-5 h-5 text-cyan-500" />
+            <span class="font-medium">Full equipadas</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-600">
+            <Users class="w-5 h-5 text-cyan-500" />
+            <span class="font-medium">Ideal familias</span>
+          </div>
+          <div class="flex items-center gap-2 text-gray-600">
+            <Sun class="w-5 h-5 text-cyan-500" />
+            <span class="font-medium">Quincho privado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-24">
+        {cabins.map((cabin, index) => (
+          <div class={`grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${index % 2 === 1 ? 'lg:grid-flow-dense' : ''}`}>
+            
+            <!-- Image Gallery con Carrusel Mejorado -->
+            <div class={index % 2 === 1 ? 'lg:col-start-2' : ''}>
+              <div class="relative rounded-3xl overflow-hidden shadow-2xl group ring-1 ring-black/5 card-hover" data-carousel>
+                <!-- Contenedor de imágenes -->
+                <div class="carousel-container flex overflow-x-auto snap-x snap-mandatory scrollbar-hide aspect-[4/3]" data-carousel-track>
+                  {cabin.images.map((img, imgIndex) => (
+                    <div class="carousel-slide snap-center shrink-0 w-full h-full" data-index={imgIndex}>
+                      <img 
+                        src={img} 
+                        alt={`${cabin.title} - Imagen ${imgIndex + 1}`} 
+                        class="w-full h-full object-cover"
+                        loading={index === 0 && imgIndex === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
+                  ))}
+                </div>
+                
+                <!-- Botones de navegación -->
+                {cabin.images.length > 1 && (
+                  <>
+                    <button 
+                      type="button"
+                      class="carousel-btn carousel-btn-prev absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      aria-label="Imagen anterior"
+                      data-carousel-prev
+                    >
+                      <ChevronLeft class="w-6 h-6 text-gray-700" />
+                    </button>
+                    <button 
+                      type="button"
+                      class="carousel-btn carousel-btn-next absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                      aria-label="Imagen siguiente"
+                      data-carousel-next
+                    >
+                      <ChevronRight class="w-6 h-6 text-gray-700" />
+                    </button>
+                  </>
+                )}
+                
+                <!-- Badge de tipo -->
+                <div class="absolute top-4 left-4 bg-cyan-600 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-lg">
+                  {cabin.subtitle}
+                </div>
+                
+                <!-- Indicadores (dots) -->
+                {cabin.images.length > 1 && (
+                  <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" data-carousel-dots>
+                    {cabin.images.map((_, dotIndex) => (
+                      <button 
+                        type="button"
+                        class={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${dotIndex === 0 ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/75'}`}
+                        aria-label={`Ir a imagen ${dotIndex + 1}`}
+                        data-carousel-dot={dotIndex}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <!-- Content -->
+            <div class={`product-card rounded-3xl p-6 lg:p-8 ${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+              <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-900">{cabin.title}</h3>
+              
+              <!-- Card de precio destacado -->
+              <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white rounded-2xl p-5 mb-6 shadow-lg">
+                <div class="flex items-end justify-between">
+                  <div>
+                    <span class="text-cyan-100 text-sm">Desde</span>
+                    <div class="flex items-baseline gap-1">
+                      <span class="text-4xl font-display font-bold">{cabin.price}</span>
+                      <span class="text-cyan-200">/{cabin.priceNote}</span>
+                    </div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-cyan-100 text-sm block">Capacidad</span>
+                    <span class="font-semibold">{cabin.features[0].text}</span>
+                  </div>
+                </div>
               </div>
               
-               <!-- Info Card -->
-               <div class="bg-[#3366ff] text-white rounded-lg p-8 flex flex-col justify-center text-center">
-                  <h3 class="text-2xl font-bold mb-4">Reservas</h3>
-                  <p class="mb-6">Para confirmar su reserva se solicita un abono del 50% del total.</p>
-                  <a href="/condiciones" class="underline hover:text-gray-200">Ver políticas de cancelación</a>
-               </div>
+              <!-- Features en grid mejorado -->
+              <ul class="grid grid-cols-2 gap-3 mb-8">
+                {cabin.features.slice(1).map(feature => (
+                  <li class="flex items-center gap-3 text-gray-700 bg-white/80 rounded-lg px-3 py-2 shadow-sm">
+                    <Check class={`w-5 h-5 shrink-0 ${feature.highlight ? 'text-cyan-600' : 'text-green-500'}`} />
+                    <span class={feature.highlight ? 'font-semibold' : ''}>{feature.text}</span>
+                  </li>
+                ))}
+              </ul>
+              
+              <!-- CTAs prominentes -->
+              <div class="flex flex-col sm:flex-row gap-3">
+                <a 
+                  href={`https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20para%20${encodeURIComponent(cabin.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-display font-bold text-white bg-[#25D366] hover:bg-[#20BA5A] shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 ease-out text-lg"
+                >
+                  <MessageCircle class="w-5 h-5" />
+                  Reservar por WhatsApp
+                </a>
+                <button 
+                  type="button"
+                  onclick="document.getElementById('condiciones-modal')?.showModal()"
+                  class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-display font-semibold border-2 border-cyan-600 text-cyan-600 bg-white hover:bg-cyan-600 hover:text-white transition-all duration-300 ease-out"
+                >
+                  Ver Condiciones
+                </button>
+              </div>
+            </div>
           </div>
+        ))}
       </div>
+    </div>
   </section>
 
-  <!-- Contact / Map -->
-  <section id="contacto" class="relative bg-gray-100">
-      <div class="h-[400px] w-full grayscale">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3314.394625292454!2d-71.86551848479093!3d-33.96119598063079!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x96637651a140f065%3A0xe54911d0a5146039!2sLomatanzas!5e0!3m2!1ses!2scl!4v1524278473855" 
-            width="100%" 
-            height="100%" 
-            style="border:0" 
-            allowfullscreen 
-            loading="lazy">
-          </iframe>
+  <!-- MOTORHOME / CAMPING SECTION - Producto Secundario -->
+  <section id="motorhome" class="section-padding bg-gradient-to-b from-stone-100 to-stone-50">
+    <div class="container-custom">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <div class="inline-flex items-center gap-2 text-amber-600 text-sm font-medium mb-3">
+          <Caravan class="w-4 h-4" />
+          <span>También disponible</span>
+        </div>
+        <h2 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-gray-900 mb-3">Sitios para Motorhome y Camper</h2>
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Vive la experiencia vanlife con todas las comodidades en un entorno natural único
+        </p>
       </div>
-      <div class="container-custom py-12">
-          <div class="bg-white p-8 md:p-12 rounded-lg shadow-xl md:-mt-32 relative z-10 grid md:grid-cols-2 gap-12">
-              <div>
-                  <h3 class="text-2xl font-bold mb-6">Contáctanos</h3>
-                  <div class="space-y-4 text-gray-600">
-                      <p class="flex items-center"><MapPin class="mr-3 w-5 h-5 text-[#57bcca]" /> Lomatanzas, Navidad, VI Región</p>
-                      <p class="flex items-center"><Mail class="mr-3 w-5 h-5 text-[#57bcca]" /> lomatanzas@gmail.com</p>
-                      <p class="flex items-center"><Phone class="mr-3 w-5 h-5 text-[#57bcca]" /> +56 9 8289 2752</p>
-                  </div>
-              </div>
-              <div>
-                  <h3 class="text-2xl font-bold mb-6">Escríbenos</h3>
-                  <div class="flex gap-4">
-                      <a href="https://wa.me/56982892752" class="flex-1 bg-green-500 text-white py-3 rounded text-center hover:bg-green-600 transition-colors font-bold flex items-center justify-center">
-                          <MessageCircle class="mr-2 w-5 h-5" /> WhatsApp
-                      </a>
-                      <a href="mailto:lomatanzas@gmail.com" class="flex-1 bg-blue-500 text-white py-3 rounded text-center hover:bg-blue-600 transition-colors font-bold flex items-center justify-center">
-                          <Mail class="mr-2 w-5 h-5" /> Email
-                      </a>
-                  </div>
-              </div>
+
+      <!-- Layout 2 columnas -->
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto">
+        
+        <!-- Galería de imágenes -->
+        <div>
+          <div class="relative rounded-2xl overflow-hidden shadow-xl group card-hover" data-carousel>
+            <div class="carousel-container flex overflow-x-auto snap-x snap-mandatory scrollbar-hide aspect-[4/3] min-h-[350px] md:min-h-[420px]" data-carousel-track>
+              {motorhomeData.images.map((img, imgIndex) => (
+                <div class="carousel-slide snap-center shrink-0 w-full h-full" data-index={imgIndex}>
+                  <img 
+                    src={img} 
+                    alt={`${motorhomeData.title} - Imagen ${imgIndex + 1}`} 
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+            
+            {motorhomeData.images.length > 1 && (
+              <>
+                <button 
+                  type="button"
+                  class="carousel-btn absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  aria-label="Imagen anterior"
+                  data-carousel-prev
+                >
+                  <ChevronLeft class="w-5 h-5 text-gray-700" />
+                </button>
+                <button 
+                  type="button"
+                  class="carousel-btn absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  aria-label="Imagen siguiente"
+                  data-carousel-next
+                >
+                  <ChevronRight class="w-5 h-5 text-gray-700" />
+                </button>
+                <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2" data-carousel-dots>
+                  {motorhomeData.images.map((_, dotIndex) => (
+                    <button 
+                      type="button"
+                      class={`w-2 h-2 rounded-full transition-all duration-300 ${dotIndex === 0 ? 'bg-white w-5' : 'bg-white/50 hover:bg-white/75'}`}
+                      aria-label={`Ir a imagen ${dotIndex + 1}`}
+                      data-carousel-dot={dotIndex}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
+        </div>
+        
+        <!-- Contenido -->
+        <div class="product-card rounded-2xl p-6">
+          <!-- Highlights de servicios -->
+          <div class="flex flex-wrap gap-2 mb-5">
+            <div class="inline-flex items-center gap-2 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-full text-sm font-medium">
+              <Zap class="w-4 h-4" />
+              Conexión 220V
+            </div>
+            <div class="inline-flex items-center gap-2 bg-cyan-100 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-medium">
+              <Droplets class="w-4 h-4" />
+              Agua potable
+            </div>
+          </div>
+          
+          <!-- Features -->
+          <ul class="grid grid-cols-2 gap-2 mb-6">
+            {motorhomeData.features.map(feature => (
+              <li class="flex items-center gap-2 text-gray-600 text-sm">
+                <Check class={`w-4 h-4 shrink-0 ${feature.highlight ? 'text-amber-500' : 'text-green-500'}`} />
+                <span>{feature.text}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <!-- Card de precios -->
+          <div class="bg-white rounded-xl p-5 shadow-md border border-stone-200 mb-6">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <span class="text-sm text-gray-500 block mb-1">Por noche</span>
+                <span class="text-2xl font-display font-bold text-amber-600">{motorhomeData.price}</span>
+              </div>
+              <div class="border-l border-stone-200 pl-4">
+                <span class="text-sm text-gray-500 block mb-1">Mensual</span>
+                <span class="text-2xl font-display font-bold text-amber-600">{motorhomeData.monthlyPrice}</span>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-3">Hasta 5 personas. Persona adicional: $10.000</p>
+          </div>
+          
+          <!-- CTAs -->
+          <div class="flex flex-wrap gap-3">
+            <a 
+              href={`https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20para%20sitio%20de%20Motorhome`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-display font-semibold text-white bg-amber-500 hover:bg-amber-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-out"
+            >
+              <MessageCircle class="w-4 h-4" />
+              Consultar Disponibilidad
+            </a>
+            <button 
+              type="button"
+              onclick="document.getElementById('condiciones-modal')?.showModal()"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-display font-semibold border-2 border-amber-500 text-amber-600 bg-white hover:bg-amber-500 hover:text-white transition-all duration-300 ease-out"
+            >
+              Ver Condiciones
+            </button>
+          </div>
+        </div>
       </div>
+    </div>
   </section>
+
+  <!-- POLÍTICAS DE RESERVA SECTION -->
+  <section id="reserva" class="py-12 md:py-16 bg-white">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto">
+        <div class="card-hover bg-gradient-to-br from-cyan-600 to-cyan-700 text-white rounded-2xl p-8 md:p-10 shadow-xl">
+          <div class="text-center mb-8">
+            <h2 class="text-2xl md:text-3xl font-display font-bold text-white mb-2">Información de Reserva</h2>
+            <p class="text-cyan-100">Lo que necesitas saber antes de reservar</p>
+          </div>
+          
+          <div class="grid sm:grid-cols-2 gap-6 mb-8">
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Check class="w-4 h-4 text-amber-300" />
+              </div>
+              <div>
+                <span class="font-semibold text-white block">50% de abono</span>
+                <span class="text-cyan-100 text-sm">Para confirmar tu reserva</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Check class="w-4 h-4 text-amber-300" />
+              </div>
+              <div>
+                <span class="font-semibold text-white block">Saldo al check-in</span>
+                <span class="text-cyan-100 text-sm">Paga el resto al llegar</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Check class="w-4 h-4 text-amber-300" />
+              </div>
+              <div>
+                <span class="font-semibold text-white block">Mínimo 2 noches</span>
+                <span class="text-cyan-100 text-sm">En fines de semana</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Check class="w-4 h-4 text-amber-300" />
+              </div>
+              <div>
+                <span class="font-semibold text-white block">Cancelación gratuita</span>
+                <span class="text-cyan-100 text-sm">Con 15 días de anticipación</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <button 
+              type="button"
+              class="inline-flex items-center gap-2 text-white/90 hover:text-white underline underline-offset-4 transition-colors text-sm"
+              onclick="document.getElementById('condiciones-modal')?.showModal()"
+            >
+              Ver todas las condiciones y políticas
+              <ArrowRight class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEARBY PLACES - SEO Local -->
+  <section class="py-12 bg-sand-dark">
+    <div class="container-custom">
+      <div class="flex flex-wrap items-center justify-center gap-8 text-sm">
+        <span class="font-display font-semibold text-gray-700">Lugares cercanos:</span>
+        {nearbyPlaces.map(place => (
+          <div class="flex items-center gap-2 text-gray-600">
+            <place.icon class="w-4 h-4 text-cyan-600" />
+            <span class="font-medium">{place.name}</span>
+            <span class="text-gray-400">• {place.time}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <FinalCTA />
+
+  <!-- CONTACT & MAP SECTION -->
+  <section id="contacto" class="bg-white">
+    <!-- Map -->
+    <div class="h-[400px] w-full grayscale-[50%] hover:grayscale-0 transition-all duration-500">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3309.4933820522647!2d-71.8564614!3d-33.9541561!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9663d14b43e6f52b%3A0x9682b41d8b8add46!2sLomatanzas%20Family%20Lodge%2C%20Caba%C3%B1as%20Matanzas!5e0!3m2!1ses-419!2scl!4v1768967366462!5m2!1ses-419!2scl" 
+        width="100%" 
+        height="100%" 
+        style="border:0" 
+        allowfullscreen 
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Ubicación de Lomatanzas en Google Maps"
+      ></iframe>
+    </div>
+    
+    <!-- Contact Info -->
+    <div class="container-custom py-12">
+      <div class="card-glass bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-100 md:-mt-24 relative z-10 grid md:grid-cols-2 gap-12">
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-6">Encuéntranos</h3>
+          <div class="space-y-4 text-gray-600">
+            <p class="flex items-start gap-3">
+              <MapPin class="w-5 h-5 mt-0.5 text-cyan-600 shrink-0" /> 
+              <span>
+                <strong class="text-gray-900 block">Lomatanzas</strong>
+                Navidad, VI Región, Chile
+              </span>
+            </p>
+            <p class="flex items-center gap-3">
+              <Mail class="w-5 h-5 text-cyan-600 shrink-0" /> 
+              <a href="mailto:contacto@lomatanzas.cl" class="hover:text-cyan-600 transition-colors">contacto@lomatanzas.cl</a>
+            </p>
+            <p class="flex items-center gap-3">
+              <Phone class="w-5 h-5 text-cyan-600 shrink-0" /> 
+              <a href="tel:+56982892752" class="hover:text-cyan-600 transition-colors">+56 9 8289 2752</a>
+            </p>
+          </div>
+          
+          <!-- Directions hint -->
+          <div class="mt-6 p-4 bg-sand rounded-xl text-sm text-gray-600">
+            <strong class="text-gray-900">¿Cómo llegar?</strong><br/>
+            Desde Santiago: Ruta 5 Sur hasta San Fernando, luego Ruta 90 hacia Pichilemu. En el cruce tomar hacia Navidad/Matanzas.
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-2xl font-display font-bold mb-6">Reserva Directa</h3>
+          <p class="text-gray-600 mb-6">
+            Escríbenos por WhatsApp para consultar disponibilidad y reservar tu estadía en Lomatanzas.
+          </p>
+          <div class="flex flex-col gap-4">
+            <a 
+              href="https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20en%20Lomatanzas" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-display font-bold text-white bg-[#25D366] hover:bg-[#20BA5A] shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 ease-out"
+            >
+              <MessageCircle class="w-5 h-5" /> 
+              Escribir por WhatsApp
+            </a>
+            <a 
+              href="mailto:contacto@lomatanzas.cl" 
+              class="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-display font-semibold border-2 border-cyan-600 text-cyan-600 bg-transparent hover:bg-cyan-600 hover:text-white transition-all duration-300 ease-out"
+            >
+              <Mail class="w-5 h-5" /> 
+              Enviar Email
+            </a>
+          </div>
+          
+          <!-- Enlace a condiciones -->
+          <div class="mt-6 pt-4 border-t border-gray-100">
+            <CondicionesModal />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </Layout>
+
+<script>
+  // Scroll reveal animation
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Carrusel de imágenes
+  function initCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    
+    carousels.forEach(carousel => {
+      const track = carousel.querySelector('[data-carousel-track]') as HTMLElement;
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const prevBtn = carousel.querySelector('[data-carousel-prev]');
+      const nextBtn = carousel.querySelector('[data-carousel-next]');
+      const dotsContainer = carousel.querySelector('[data-carousel-dots]');
+      const dots = carousel.querySelectorAll('[data-carousel-dot]');
+      
+      if (!track || slides.length === 0) return;
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      
+      // Función para actualizar los dots
+      function updateDots(index: number) {
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.remove('bg-white/50', 'hover:bg-white/75');
+            dot.classList.add('bg-white', 'w-6');
+          } else {
+            dot.classList.remove('bg-white', 'w-6');
+            dot.classList.add('bg-white/50', 'hover:bg-white/75');
+          }
+        });
+      }
+      
+      // Función para ir a una slide específica
+      function goToSlide(index: number) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        
+        currentIndex = index;
+        const slideWidth = track.clientWidth;
+        track.scrollTo({
+          left: slideWidth * index,
+          behavior: 'smooth'
+        });
+        updateDots(index);
+      }
+      
+      // Event listeners para botones
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+      }
+      
+      // Event listeners para dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => goToSlide(index));
+      });
+      
+      // Detectar scroll manual para actualizar dots
+      let scrollTimeout: ReturnType<typeof setTimeout>;
+      track.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const slideWidth = track.clientWidth;
+          const scrollPosition = track.scrollLeft;
+          const newIndex = Math.round(scrollPosition / slideWidth);
+          
+          if (newIndex !== currentIndex && newIndex >= 0 && newIndex < totalSlides) {
+            currentIndex = newIndex;
+            updateDots(currentIndex);
+          }
+        }, 50);
+      });
+      
+      // Soporte para navegación con teclado cuando el carrusel tiene foco
+      carousel.addEventListener('keydown', (e) => {
+        const keyEvent = e as KeyboardEvent;
+        if (keyEvent.key === 'ArrowLeft') {
+          goToSlide(currentIndex - 1);
+        } else if (keyEvent.key === 'ArrowRight') {
+          goToSlide(currentIndex + 1);
+        }
+      });
+    });
+  }
+  
+  // Inicializar carruseles cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', initCarousels);
+  
+  // También inicializar inmediatamente por si el DOM ya está listo
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initCarousels();
+  }
+</script>

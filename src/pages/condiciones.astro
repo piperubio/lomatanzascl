@@ -1,10 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { ArrowLeft } from 'lucide-astro';
 ---
 
-<Layout title="Condiciones - Lomatanzas">
+<Layout title="Condiciones y Políticas - Lomatanzas Family Lodge">
     <div class="bg-gray-100 py-12 md:py-20">
         <div class="container-custom max-w-4xl bg-white p-8 md:p-16 rounded shadow-sm">
+            <!-- Back link -->
+            <a href="/" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark transition-colors mb-8 group">
+                <ArrowLeft class="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                <span>Volver al inicio</span>
+            </a>
+            
             <h1 class="text-3xl md:text-4xl font-bold mb-10 text-center border-b pb-6">Condiciones y Políticas</h1>
             
             <div class="prose prose-lg text-gray-600 max-w-none">
@@ -32,6 +39,24 @@ import Layout from '../layouts/Layout.astro';
                 <div class="mt-12 bg-blue-50 border-l-4 border-[#3366ff] p-6">
                     <p class="font-bold text-[#3366ff]">Datos Importantes</p>
                     <p class="text-sm mt-2">La administración se reserva el derecho de admisión y permanencia. Cualquier daño a la propiedad será cargado a la cuenta del huésped.</p>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="mt-12 pt-8 border-t text-center">
+                    <p class="text-gray-600 mb-4">¿Tienes alguna duda sobre nuestras condiciones?</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a 
+                            href="https://wa.me/56982892752?text=Hola!%20Tengo%20una%20consulta%20sobre%20las%20condiciones%20de%20reserva" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn-whatsapp"
+                        >
+                            Consultar por WhatsApp
+                        </a>
+                        <a href="/" class="btn-secondary">
+                            Volver al inicio
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

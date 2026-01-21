@@ -1,93 +1,276 @@
 ---
 import "../styles/global.css";
-import { Facebook, Instagram, Menu, Phone, Mail, MapPin } from 'lucide-astro';
+import { Facebook, Instagram, Menu, X, Phone, Mail, MapPin } from 'lucide-astro';
 
 interface Props {
 	title: string;
+	description?: string;
+	keywords?: string;
+	image?: string;
+	type?: 'website' | 'article';
 }
 
-const { title } = Astro.props;
+const { 
+	title, 
+	description = "Cabañas y alojamiento en Playa de Matanzas, Litoral Central de Chile. Family Lodge con spa, jacuzzi, WiFi fibra y estacionamiento para motorhome. A pasos de la playa.",
+	keywords = "cabañas matanzas, alojamiento playa matanzas, cabañas litoral central, motorhome matanzas, arriendo cabañas playa chile, donde alojar matanzas, cabañas cerca de la playa",
+	image = "/images/gallery/IMG-20220808-WA0026.jpg",
+	type = "website"
+} = Astro.props;
+
+const siteUrl = "https://lomatanzas.cl";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+
+// Schema.org JSON-LD para LocalBusiness + LodgingBusiness
+const schemaOrg = {
+	"@context": "https://schema.org",
+	"@type": "LodgingBusiness",
+	"name": "Lomatanzas Family Lodge",
+	"description": description,
+	"url": siteUrl,
+	"telephone": "+56982892752",
+	"email": "contacto@lomatanzas.cl",
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": "Lomatanzas",
+		"addressLocality": "Navidad",
+		"addressRegion": "O'Higgins",
+		"addressCountry": "CL"
+	},
+	"geo": {
+		"@type": "GeoCoordinates",
+		"latitude": -33.96119598063079,
+		"longitude": -71.86551848479093
+	},
+	"image": `${siteUrl}${image}`,
+	"priceRange": "$55.000 - $100.000 CLP",
+	"amenityFeature": [
+		{ "@type": "LocationFeatureSpecification", "name": "WiFi Fibra", "value": true },
+		{ "@type": "LocationFeatureSpecification", "name": "Estacionamiento", "value": true },
+		{ "@type": "LocationFeatureSpecification", "name": "Spa & Jacuzzi", "value": true },
+		{ "@type": "LocationFeatureSpecification", "name": "Quincho con Parrilla", "value": true },
+		{ "@type": "LocationFeatureSpecification", "name": "Parking Motorhome", "value": true }
+	],
+	"sameAs": [
+		"https://www.facebook.com/LoMatanzas-1737829013187786/",
+		"https://www.instagram.com/lomatanzasfamilylodge/"
+	]
+};
 ---
 
 <!doctype html>
 <html lang="es" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Lomatanzas Family Lodge - Cabañas y Motorhome" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/images/brand/favicon.svg" />
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<!-- SEO Meta Tags -->
 		<title>{title}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={keywords} />
+		<meta name="robots" content="index, follow" />
+		<meta name="author" content="Lomatanzas Family Lodge" />
+		<link rel="canonical" href={canonicalUrl} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={`${siteUrl}${image}`} />
+		<meta property="og:locale" content="es_CL" />
+		<meta property="og:site_name" content="Lomatanzas Family Lodge" />
+		
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={`${siteUrl}${image}`} />
+		
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="/images/brand/cropped-logo-32x32.png" />
+		<link rel="apple-touch-icon" href="/images/brand/cropped-logo-180x180.png" />
+		
+		<!-- Fonts - Plus Jakarta Sans (display) + DM Sans (body) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+		
+		<!-- Schema.org JSON-LD -->
+		<script type="application/ld+json" set:html={JSON.stringify(schemaOrg)} />
 	</head>
-	<body class="bg-white text-[15px] leading-relaxed text-gray-700">
+	<body class="bg-white text-base leading-relaxed text-gray-700 font-body">
 		<!-- Header -->
-		<header class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
+		<header id="main-header" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
 			<div class="container-custom py-4 flex justify-between items-center">
 				<a href="/" class="flex items-center gap-2">
-					<img src="/images/brand/logo_lomatanzas.png" alt="Lomatanzas Logo" class="h-12 w-auto" />
+					<img src="/images/brand/logo_lomatanzas.png" alt="Lomatanzas Family Lodge - Cabañas en Matanzas" class="h-12 w-auto" />
 				</a>
 				
+				<!-- Desktop Navigation -->
 				<nav class="hidden md:block">
-					<ul class="flex gap-6 text-sm font-semibold uppercase tracking-wide text-[#333]">
-						<li><a href="/" class="hover:text-[#57bcca] transition-colors">Inicio</a></li>
-						<li><a href="/#galeria-de-fotos" class="hover:text-[#57bcca] transition-colors">Galería</a></li>
-						<li><a href="/#precios-038-reservas" class="hover:text-[#57bcca] transition-colors">Precios</a></li>
-						<li><a href="/condiciones" class="hover:text-[#57bcca] transition-colors">Condiciones</a></li>
-						<li><a href="/#contacto" class="hover:text-[#57bcca] transition-colors">Contacto</a></li>
+					<ul class="flex gap-8 text-sm font-semibold uppercase tracking-wide text-gray-800">
+						<li><a href="/" class="hover:text-cyan-600 transition-colors">Inicio</a></li>
+						<li><a href="/#cabanas" class="hover:text-cyan-600 transition-colors">Cabañas</a></li>
+						<li><a href="/#motorhome" class="hover:text-cyan-600 transition-colors">Motorhome</a></li>
+						<li><a href="/#contacto" class="hover:text-cyan-600 transition-colors">Contacto</a></li>
 					</ul>
 				</nav>
 
-                <!-- Mobile Menu Button (Placeholder) -->
-                <button class="md:hidden p-2" aria-label="Menu">
-                    <Menu class="w-6 h-6" />
-                </button>
+				<!-- Mobile Menu Button -->
+				<button 
+					id="mobile-menu-btn" 
+					class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors" 
+					aria-label="Abrir menú"
+					aria-expanded="false"
+				>
+					<Menu id="menu-icon-open" class="w-6 h-6" />
+					<X id="menu-icon-close" class="w-6 h-6 hidden" />
+				</button>
 			</div>
+			
+			<!-- Mobile Navigation -->
+			<nav id="mobile-menu" class="md:hidden hidden bg-white border-t border-gray-100">
+				<ul class="container-custom py-4 space-y-4 text-sm font-semibold uppercase tracking-wide text-gray-800">
+					<li><a href="/" class="block py-2 hover:text-cyan-600 transition-colors">Inicio</a></li>
+					<li><a href="/#cabanas" class="block py-2 hover:text-cyan-600 transition-colors">Cabañas</a></li>
+					<li><a href="/#motorhome" class="block py-2 hover:text-cyan-600 transition-colors">Motorhome</a></li>
+					<li><a href="/#contacto" class="block py-2 hover:text-cyan-600 transition-colors">Contacto</a></li>
+					<li class="pt-2 border-t border-gray-100">
+						<a href="https://wa.me/56982892752" class="flex items-center gap-2 py-2 text-green-600 font-bold">
+							<Phone class="w-4 h-4" /> WhatsApp
+						</a>
+					</li>
+				</ul>
+			</nav>
 		</header>
 
-		<main class="mt-[80px]">
+		<main class="pt-[72px]">
 			<slot />
 		</main>
 
 		<!-- Footer -->
-		<footer class="bg-[#1a1a1a] text-gray-400 py-12">
+		<footer class="bg-gray-900 text-gray-400 py-16">
 			<div class="container-custom">
-				<div class="grid md:grid-cols-3 gap-8">
+				<div class="grid md:grid-cols-4 gap-8 mb-12">
+					<!-- Brand -->
+					<div class="md:col-span-1">
+						<img src="/images/brand/cropped-logo-180x180.png" alt="Lomatanzas" class="h-12 w-auto mb-4" />
+						<p class="text-sm leading-relaxed">
+							Tu refugio familiar en la Playa de Matanzas. Cabañas equipadas, spa y estacionamiento para motorhome.
+						</p>
+					</div>
+					
+					<!-- Quick Links -->
+					<div>
+						<h3 class="text-white font-display font-semibold mb-4">Enlaces</h3>
+						<ul class="space-y-2 text-sm">
+							<li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+							<li><a href="/#cabanas" class="hover:text-white transition-colors">Cabañas</a></li>
+							<li><a href="/#motorhome" class="hover:text-white transition-colors">Motorhome</a></li>
+							<li><a href="/condiciones" class="hover:text-white transition-colors">Condiciones</a></li>
+						</ul>
+					</div>
+					
+					<!-- Contact -->
+					<div>
+						<h3 class="text-white font-display font-semibold mb-4">Contacto</h3>
+						<ul class="space-y-2 text-sm">
+						<li class="flex items-start gap-2">
+							<MapPin class="w-4 h-4 mt-0.5 shrink-0 text-cyan-600" />
+							<span>Lomatanzas, Navidad<br/>VI Región, Chile</span>
+						</li>
+						<li class="flex items-center gap-2">
+							<Phone class="w-4 h-4 shrink-0 text-cyan-600" />
+							<a href="tel:+56982892752" class="hover:text-white transition-colors">+56 9 8289 2752</a>
+						</li>
+						<li class="flex items-center gap-2">
+							<Mail class="w-4 h-4 shrink-0 text-cyan-600" />
+							<a href="mailto:contacto@lomatanzas.cl" class="hover:text-white transition-colors">contacto@lomatanzas.cl</a>
+						</li>
+						</ul>
+					</div>
+					
 					<!-- Social -->
-					<div class="text-center md:text-left">
-						<h3 class="text-white text-lg font-bold mb-4">Síguenos</h3>
-						<div class="flex gap-4 justify-center md:justify-start">
-							<a href="https://www.facebook.com/LoMatanzas-1737829013187786/" target="_blank" class="bg-[#3b5998] text-white w-10 h-10 flex items-center justify-center rounded-full hover:opacity-90 transition-opacity">
+					<div>
+						<h3 class="text-white font-display font-semibold mb-4">Síguenos</h3>
+						<div class="flex gap-3">
+							<a 
+								href="https://www.facebook.com/LoMatanzas-1737829013187786/" 
+								target="_blank" 
+								rel="noopener noreferrer"
+								class="bg-gray-800 hover:bg-[#1877F2] text-white w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300"
+								aria-label="Facebook"
+							>
 								<Facebook class="w-5 h-5" />
 							</a>
-							<a href="https://www.instagram.com/lomatanzasfamilylodge/" target="_blank" class="bg-gradient-to-r from-[#914cc9] to-[#e4405f] text-white w-10 h-10 flex items-center justify-center rounded-full hover:opacity-90 transition-opacity">
+							<a 
+								href="https://www.instagram.com/lomatanzasfamilylodge/" 
+								target="_blank" 
+								rel="noopener noreferrer"
+								class="bg-gray-800 hover:bg-gradient-to-r hover:from-[#833AB4] hover:via-[#FD1D1D] hover:to-[#F77737] text-white w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300"
+								aria-label="Instagram"
+							>
 								<Instagram class="w-5 h-5" />
 							</a>
 						</div>
+						<p class="text-xs mt-4 text-gray-500">
+							Revisa nuestras fotos y reseñas
+						</p>
 					</div>
-					
-					<!-- Info -->
-					<div class="text-center col-span-2 md:text-right">
-						<p>&copy; {(new Date()).getFullYear()} Lomatanzas Family Lodge.</p>
-                        <p class="text-sm mt-2">Todos los derechos reservados.</p>
+				</div>
+				
+				<!-- Bottom Bar -->
+				<div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+					<p>&copy; {(new Date()).getFullYear()} Lomatanzas Family Lodge. Todos los derechos reservados.</p>
+					<div class="flex gap-6">
+						<a href="/condiciones" class="hover:text-white transition-colors">Condiciones</a>
+						<a href="/#contacto" class="hover:text-white transition-colors">Contacto</a>
 					</div>
 				</div>
 			</div>
 		</footer>
 
-        <!-- Floating WhatsApp Button -->
-        <a 
-          href="https://wa.me/56992825750" 
-          target="_blank" 
-          rel="noopener" 
-          class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#20BA5A] transition-all duration-300 hover:scale-110 group flex items-center justify-center" 
-          aria-label="Contactar por WhatsApp"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
-          </svg>
-          <span class="hidden group-hover:block absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-sm font-medium px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-            Chatea con nosotros
-          </span>
-        </a>
+		<!-- Floating WhatsApp Button -->
+		<a 
+			href="https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20en%20Lomatanzas" 
+			target="_blank" 
+			rel="noopener noreferrer" 
+			class="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:bg-[#20BA5A] transition-all duration-300 hover:scale-110 group flex items-center justify-center animate-bounce-slow" 
+			aria-label="Contactar por WhatsApp"
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24">
+				<path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path>
+			</svg>
+			<span class="hidden lg:block absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-gray-900 text-white text-sm font-medium px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none shadow-lg">
+				Reserva por WhatsApp
+			</span>
+		</a>
+
+		<!-- Mobile Menu Script -->
+		<script>
+			const menuBtn = document.getElementById('mobile-menu-btn');
+			const mobileMenu = document.getElementById('mobile-menu');
+			const iconOpen = document.getElementById('menu-icon-open');
+			const iconClose = document.getElementById('menu-icon-close');
+			
+			menuBtn?.addEventListener('click', () => {
+				const isOpen = mobileMenu?.classList.contains('hidden');
+				mobileMenu?.classList.toggle('hidden');
+				iconOpen?.classList.toggle('hidden');
+				iconClose?.classList.toggle('hidden');
+				menuBtn?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+			});
+			
+			// Close menu when clicking on a link
+			mobileMenu?.querySelectorAll('a').forEach(link => {
+				link.addEventListener('click', () => {
+					mobileMenu?.classList.add('hidden');
+					iconOpen?.classList.remove('hidden');
+					iconClose?.classList.add('hidden');
+					menuBtn?.setAttribute('aria-expanded', 'false');
+				});
+			});
+		</script>
 	</body>
 </html>

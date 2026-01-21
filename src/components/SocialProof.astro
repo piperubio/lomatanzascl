@@ -1,0 +1,73 @@
+---
+/**
+ * SocialProof Component
+ * Muestra estadísticas clave para generar confianza
+ * Posicionado justo después del Hero para reforzar credibilidad
+ */
+
+import { Users, MapPin, Wifi, Calendar } from 'lucide-astro';
+
+const stats = [
+  {
+    icon: Calendar,
+    value: "+5",
+    label: "Años de experiencia",
+    suffix: ""
+  },
+  {
+    icon: Users,
+    value: "500",
+    label: "Familias hospedadas",
+    suffix: "+"
+  },
+  {
+    icon: MapPin,
+    value: "5",
+    label: "Min en auto a la playa",
+    suffix: "min"
+  },
+  {
+    icon: Wifi,
+    value: "100",
+    label: "Mbps WiFi Fibra",
+    suffix: ""
+  }
+];
+---
+
+<section class="relative -mt-16 z-10 pb-8">
+  <div class="container-custom">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        {stats.map((stat, index) => (
+          <div 
+            class="text-center group"
+            style={`animation-delay: ${index * 100}ms`}
+          >
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-cyan-50 text-cyan-600 mb-3 group-hover:bg-cyan-100 transition-colors">
+              <stat.icon class="w-6 h-6" />
+            </div>
+            <div class="font-display">
+              <span class="text-3xl md:text-4xl font-bold text-gray-900">
+                {stat.value}
+              </span>
+              {stat.suffix && (
+                <span class="text-xl md:text-2xl font-bold text-cyan-600">
+                  {stat.suffix}
+                </span>
+              )}
+            </div>
+            <p class="text-sm text-gray-500 mt-1">{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Animación de contador - se puede mejorar con JS si se desea */
+  .font-display span {
+    display: inline-block;
+  }
+</style>

@@ -1,0 +1,182 @@
+---
+/**
+ * CondicionesModal
+ * Modal discreto con las condiciones completas de reserva
+ * Utiliza el elemento nativo <dialog> para mejor accesibilidad
+ */
+
+import { FileText, X } from 'lucide-astro';
+---
+
+<!-- Trigger Button -->
+<button 
+  id="condiciones-trigger"
+  class="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-primary transition-colors group"
+  type="button"
+>
+  <FileText class="w-4 h-4 group-hover:text-primary" />
+  <span class="underline underline-offset-2">Ver condiciones de reserva</span>
+</button>
+
+<!-- Modal usando dialog nativo -->
+<dialog 
+  id="condiciones-modal"
+  class="condiciones-dialog bg-transparent p-0 m-auto max-w-2xl w-[calc(100%-2rem)] max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden"
+>
+  <div class="bg-white flex flex-col max-h-[90vh] font-body">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b bg-sand shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+          <FileText class="w-5 h-5 text-primary" />
+        </div>
+        <h2 class="text-xl font-display font-bold text-gray-900">
+          Condiciones y Políticas
+        </h2>
+      </div>
+      <button 
+        id="modal-close"
+        type="button"
+        class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition-colors"
+        aria-label="Cerrar"
+      >
+        <X class="w-5 h-5 text-gray-500" />
+      </button>
+    </div>
+    
+    <!-- Body with Scroll -->
+    <div class="overflow-y-auto flex-1 px-6 py-8">
+      <div class="space-y-8 text-gray-600 leading-relaxed">
+        
+        <!-- Reserva y Pago -->
+        <div class="space-y-3">
+          <h3 class="text-base font-display font-bold text-gray-900">Reserva y Pago</h3>
+          <ul class="space-y-2 ml-4 list-disc marker:text-primary/50">
+            <li>Para realizar tu reserva, se solicita pagar por anticipado el <strong class="text-gray-900">50% del valor total</strong> de tu estadía.</li>
+            <li>El saldo restante se debe cancelar al momento de llegar (check-in).</li>
+            <li>Las reservas solo se pueden realizar por un mínimo de <strong class="text-gray-900">2 noches</strong> en un fin de semana normal y <strong class="text-gray-900">3 o más noches</strong> para uno largo.</li>
+          </ul>
+        </div>
+
+        <!-- Cancelación -->
+        <div class="space-y-3">
+          <h3 class="text-base font-display font-bold text-gray-900">Política de Cancelación</h3>
+          <ul class="space-y-2 ml-4 list-disc marker:text-primary/50">
+            <li>Puedes cancelar sin costo alguno con aviso previo de <strong class="text-gray-900">15 días</strong> antes de la fecha de llegada.</li>
+          </ul>
+          <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 text-sm">
+            <strong class="text-amber-800">Temporada Alta (Enero-Febrero):</strong>
+            <span class="text-amber-700"> Cancelación sin costo solo con más de <strong>30 días</strong> de anticipación.</span>
+          </div>
+        </div>
+
+        <!-- Horarios -->
+        <div class="space-y-3">
+          <h3 class="text-base font-display font-bold text-gray-900">Horarios</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-3 rounded-lg text-center">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Check-in</p>
+              <p class="text-lg font-display font-bold text-gray-900">15:00 hrs</p>
+            </div>
+            <div class="bg-gray-50 p-3 rounded-lg text-center">
+              <p class="text-xs text-gray-500 uppercase tracking-wide">Check-out</p>
+              <p class="text-lg font-display font-bold text-gray-900">12:00 hrs</p>
+            </div>
+          </div>
+          <p class="text-sm text-gray-500">Late check-out hasta las 17:00 hrs tiene un recargo de $20.000 a $25.000 (sujeto a disponibilidad).</p>
+        </div>
+
+        <!-- Servicios -->
+        <div class="space-y-3">
+          <h3 class="text-base font-display font-bold text-gray-900">Servicios Incluidos</h3>
+          <ul class="space-y-2 ml-4 list-disc marker:text-primary/50">
+            <li>Las cabañas cuentan con <strong class="text-gray-900">sábanas incluidas</strong>.</li>
+            <li><strong class="text-gray-900">NO incluyen toallas</strong> (disponibles por $3.000 c/u).</li>
+            <li>Las visitas por el día se cobran aparte.</li>
+            <li>Para pasar la noche <strong class="text-gray-900">NO se permiten visitas</strong> adicionales a la capacidad pactada.</li>
+          </ul>
+        </div>
+
+        <!-- Normas -->
+        <div class="space-y-3">
+          <h3 class="text-base font-display font-bold text-gray-900">Normas de Convivencia</h3>
+          <ul class="space-y-2 ml-4 list-disc marker:text-primary/50">
+            <li>Los vehículos deben estacionarse solo en el lugar designado.</li>
+            <li>Se permite <strong class="text-gray-900">una mascota</strong> por cabaña o sitio de motorhome (con cargo adicional).</li>
+            <li>No hacer fogatas en parrillas. Solo en el fogón designado.</li>
+            <li>Prohibido botar colillas al suelo o contaminar el entorno.</li>
+            <li>Respetar la tranquilidad del recinto y de los demás huéspedes.</li>
+            <li>Uso consciente del agua y la energía eléctrica.</li>
+          </ul>
+        </div>
+
+        <!-- Nota Final -->
+        <div class="bg-cyan-50 border-l-4 border-primary p-4 rounded-r">
+          <p class="font-display font-bold text-primary text-sm mb-1">Información Importante</p>
+          <p class="text-sm text-gray-600 leading-relaxed">
+            La administración se reserva el derecho de admisión y permanencia. Cualquier daño a la propiedad será cargado a la cuenta del huésped.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="px-6 py-4 border-t bg-gray-50 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between shrink-0">
+      <a 
+        href="/condiciones" 
+        class="text-sm text-gray-500 hover:text-primary transition-colors"
+      >
+        Ver página completa de condiciones
+      </a>
+      <button
+        id="modal-accept"
+        type="button"
+        class="btn-primary text-sm"
+      >
+        Entendido
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  /* Estilos para el dialog nativo */
+  .condiciones-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .condiciones-dialog[open] {
+    animation: dialog-show 0.2s ease-out;
+  }
+
+  @keyframes dialog-show {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>
+
+<script>
+  // Dialog nativo - mucho más simple
+  const trigger = document.getElementById('condiciones-trigger');
+  const dialog = document.getElementById('condiciones-modal') as HTMLDialogElement;
+  const closeBtn = document.getElementById('modal-close');
+  const acceptBtn = document.getElementById('modal-accept');
+
+  trigger?.addEventListener('click', () => dialog?.showModal());
+  closeBtn?.addEventListener('click', () => dialog?.close());
+  acceptBtn?.addEventListener('click', () => dialog?.close());
+
+  // Cerrar al hacer clic en el backdrop
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+</script>
