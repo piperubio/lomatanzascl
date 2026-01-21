@@ -280,14 +280,43 @@ button:focus-visible {
   }
 }
 
-/* Carousel Styles */
-.carousel-container {
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+/* Carousel Styles - Sistema estandarizado para sliders */
+
+/* Wrapper del carrusel: contiene overflow para evitar desbordamiento */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
+/* Contenedor de slides: scroll horizontal con snap */
+.carousel-container {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Slides individuales: ocupan 100% del ancho del contenedor */
 .carousel-slide {
-  scroll-snap-align: center;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  scroll-snap-align: start;
+}
+
+/* Imágenes dentro del slide */
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Mostrar botones del carrusel en móvil con menor opacidad */

@@ -1,0 +1,172 @@
+---
+/**
+ * CabinasSection
+ * Sección de cabañas con galería de imágenes y características
+ */
+
+import { Check, Home, Users, Sun, Sparkles, MessageCircle } from 'lucide-astro';
+import Carousel from './Carousel.astro';
+
+// Datos de las cabañas
+const cabins = [
+  {
+    id: "2dorm",
+    title: "Cabaña de 2 Dormitorios",
+    subtitle: "Ideal para familias",
+    images: [
+      "/images/landscape/Foto-2-Lomatanzas-exterior-300x225.jpg",
+      "/images/landscape/exterior15-569x426.jpg",
+      "/images/landscape/exterior6-569x426.jpg",
+      "/images/gallery/IMG-20210614-WA0049-800x600.jpg",
+      "/images/cabins/Foto-7-Lomatanzas-interior-800x600.jpg",
+      "/images/gallery/20220409_131845-800x600.jpg",
+      "/images/gallery/IMG-20210614-WA0054-800x600.jpg",
+      "/images/cabins/Foto-10-Lomatanzas-interior-710x533.jpg",
+      "/images/cabins/Foto-6-Lomatanzas-interior-710x533.jpg",
+      "/images/landscape/Foto-13-Lomatanzas-exterior-800x600.jpg",
+      "/images/gallery/20210715_220455-800x600.jpg"
+    ],
+    features: [
+      { text: "4-5 Personas", highlight: false },
+      { text: "2 Dormitorios", highlight: true },
+      { text: "2 Baños completos", highlight: false },
+      { text: "TV Cable", highlight: false },
+      { text: "Quincho con parrilla", highlight: false },
+      { text: "Estacionamiento privado", highlight: false }
+    ],
+    price: "$105.000",
+    priceNote: "por noche"
+  },
+  {
+    id: "1dorm",
+    title: "Cabaña de 1 Dormitorio",
+    subtitle: "Perfecta para parejas",
+    images: [
+      "/images/cabins/CABANA-1D-F1-800x600.jpeg",
+      "/images/cabins/CABANA-1D-F2-800x600.jpeg",
+      "/images/gallery/20211029_182222-800x600.jpg",
+      "/images/gallery/20211023_195044-e1656693214601-800x600.jpg",
+      "/images/gallery/20220408_195322-800x600.jpg",
+      "/images/gallery/20211029_182309-800x600.jpg",
+      "/images/gallery/20211029_182244-800x600.jpg",
+      "/images/gallery/20220624_121012-800x600.jpg"
+    ],
+    features: [
+      { text: "2-3 Personas", highlight: false },
+      { text: "1 Dormitorio", highlight: true },
+      { text: "1 Baño completo", highlight: false },
+      { text: "TV Cable", highlight: false },
+      { text: "Quincho con parrilla", highlight: false },
+      { text: "Estacionamiento privado", highlight: false }
+    ],
+    price: "$85.000",
+    priceNote: "por noche"
+  }
+];
+---
+
+<section id="cabanas" class="section-padding bg-gradient-to-b from-sand via-white to-sand">
+  <div class="container-custom">
+    <!-- Header destacado -->
+    <div class="text-center mb-16">
+      <div class="inline-flex items-center gap-2 bg-cyan-100 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium mb-4">
+        <Home class="w-4 h-4" />
+        <span>Alojamiento Principal</span>
+      </div>
+      <h2 class="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-center mb-4 text-gray-900">Nuestras Cabañas en Matanzas</h2>
+      <p class="text-lg md:text-xl text-center max-w-2xl mx-auto text-warm-gray">
+        Cabañas completamente equipadas con todas las comodidades para tu estadía perfecta frente al mar
+      </p>
+      
+      <!-- Highlights rápidos -->
+      <div class="flex flex-wrap justify-center gap-4 mt-8">
+        <div class="flex items-center gap-2 text-gray-600">
+          <Sparkles class="w-5 h-5 text-cyan-500" />
+          <span class="font-medium">Full equipadas</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-600">
+          <Users class="w-5 h-5 text-cyan-500" />
+          <span class="font-medium">Ideal familias</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-600">
+          <Sun class="w-5 h-5 text-cyan-500" />
+          <span class="font-medium">Quincho privado</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-16 lg:gap-24">
+      {cabins.map((cabin, index) => (
+        <article class="cabin-card">
+          <div class={`grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${index % 2 === 1 ? '' : ''}`}>
+            
+            <!-- Image Gallery con Carrusel -->
+            <div class={`w-full ${index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
+              <Carousel 
+                images={cabin.images}
+                title={cabin.title}
+                badge={cabin.subtitle}
+                badgeColor="cyan"
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+            
+            <!-- Content -->
+            <div class={`w-full ${index % 2 === 1 ? 'lg:order-1' : 'lg:order-2'}`}>
+              <div class="product-card rounded-3xl p-6 lg:p-8">
+                <h3 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-4 text-gray-900">{cabin.title}</h3>
+                
+                <!-- Card de precio destacado -->
+                <div class="bg-gradient-to-r from-cyan-600 to-cyan-500 text-white rounded-2xl p-5 mb-6 shadow-lg">
+                  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 sm:gap-4">
+                    <div>
+                      <span class="text-cyan-100 text-sm">Desde</span>
+                      <div class="flex items-baseline gap-1">
+                        <span class="text-4xl font-display font-bold">{cabin.price}</span>
+                        <span class="text-cyan-200">/{cabin.priceNote}</span>
+                      </div>
+                    </div>
+                    <div class="sm:text-right">
+                      <span class="text-cyan-100 text-sm block">Capacidad</span>
+                      <span class="font-semibold">{cabin.features[0].text}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Features en grid mejorado -->
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+                  {cabin.features.slice(1).map((feature, featureIndex) => (
+                    <li class={`flex items-center gap-3 text-gray-700 bg-white/80 rounded-lg px-3 py-2 shadow-sm ${featureIndex === cabin.features.slice(1).length - 1 && cabin.features.slice(1).length % 2 === 1 ? 'sm:col-span-2' : ''}`}>
+                      <Check class={`w-5 h-5 shrink-0 ${feature.highlight ? 'text-cyan-600' : 'text-green-500'}`} />
+                      <span class={feature.highlight ? 'font-semibold' : ''}>{feature.text}</span>
+                    </li>
+                  ))}
+                </ul>
+                
+                <!-- CTAs prominentes -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href={`https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20para%20${encodeURIComponent(cabin.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center gap-2 px-5 sm:px-8 py-4 rounded-full font-display font-bold text-white bg-[#25D366] hover:bg-[#20BA5A] shadow-lg hover:shadow-xl hover:-translate-y-0.5 hover:scale-105 transition-all duration-300 ease-out text-lg whitespace-nowrap"
+                  >
+                    <MessageCircle class="w-5 h-5 shrink-0" />
+                    Reservar por WhatsApp
+                  </a>
+                  <button 
+                    type="button"
+                    onclick="document.getElementById('condiciones-modal')?.showModal()"
+                    class="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full font-display font-semibold border-2 border-cyan-600 text-cyan-600 bg-white hover:bg-cyan-600 hover:text-white transition-all duration-300 ease-out"
+                  >
+                    Ver Condiciones
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

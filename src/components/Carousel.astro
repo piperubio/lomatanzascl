@@ -1,0 +1,229 @@
+---
+/**
+ * Carousel
+ * Componente reutilizable para galerías de imágenes con navegación
+ */
+
+import { ChevronLeft, ChevronRight } from 'lucide-astro';
+
+interface Props {
+  images: string[];
+  title: string;
+  badge?: string;
+  badgeColor?: 'cyan' | 'amber';
+  aspectRatio?: 'video' | 'square' | '4/3';
+  size?: 'default' | 'compact';
+  loading?: 'eager' | 'lazy';
+}
+
+const { 
+  images, 
+  title, 
+  badge, 
+  badgeColor = 'cyan',
+  aspectRatio = '4/3',
+  size = 'default',
+  loading = 'lazy'
+} = Astro.props;
+
+// Clases de aspecto según la prop
+const aspectClasses = {
+  'video': 'aspect-video',
+  'square': 'aspect-square',
+  '4/3': 'aspect-[4/3]'
+};
+
+// Clases de color para el badge
+const badgeColors = {
+  cyan: 'bg-cyan-600 text-white',
+  amber: 'bg-amber-500 text-white'
+};
+
+// Tamaños de botones según size
+const btnSizes = {
+  default: 'w-11 h-11',
+  compact: 'w-9 h-9'
+};
+
+const iconSizes = {
+  default: 'w-6 h-6',
+  compact: 'w-5 h-5'
+};
+
+const dotSizes = {
+  default: { normal: 'w-2.5 h-2.5', active: 'w-6' },
+  compact: { normal: 'w-2 h-2', active: 'w-5' }
+};
+---
+
+<div class="relative rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl group ring-1 ring-black/5" data-carousel>
+  <!-- Contenedor de imágenes -->
+  <div class={`carousel-wrapper ${aspectClasses[aspectRatio]}`}>
+    <div class="carousel-container h-full" data-carousel-track>
+      {images.map((img, imgIndex) => (
+        <div class="carousel-slide h-full" data-index={imgIndex}>
+          <img 
+            src={img} 
+            alt={`${title} - Imagen ${imgIndex + 1}`} 
+            loading={imgIndex === 0 ? loading : 'lazy'}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+  
+  <!-- Botones de navegación -->
+  {images.length > 1 && (
+    <>
+      <button 
+        type="button"
+        class={`carousel-btn carousel-btn-prev absolute left-3 top-1/2 -translate-y-1/2 ${btnSizes[size]} rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-cyan-500`}
+        aria-label="Imagen anterior"
+        data-carousel-prev
+      >
+        <ChevronLeft class={`${iconSizes[size]} text-gray-700`} />
+      </button>
+      <button 
+        type="button"
+        class={`carousel-btn carousel-btn-next absolute right-3 top-1/2 -translate-y-1/2 ${btnSizes[size]} rounded-full bg-white/90 hover:bg-white shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-cyan-500`}
+        aria-label="Imagen siguiente"
+        data-carousel-next
+      >
+        <ChevronRight class={`${iconSizes[size]} text-gray-700`} />
+      </button>
+    </>
+  )}
+  
+  <!-- Badge de tipo (opcional) -->
+  {badge && (
+    <div class={`absolute top-4 left-4 ${badgeColors[badgeColor]} text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-lg`}>
+      {badge}
+    </div>
+  )}
+  
+  <!-- Indicadores (dots) -->
+  {images.length > 1 && (
+    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2" data-carousel-dots>
+      {images.map((_, dotIndex) => (
+        <button 
+          type="button"
+          class={`${dotSizes[size].normal} rounded-full transition-all duration-300 ${dotIndex === 0 ? `bg-white ${dotSizes[size].active}` : 'bg-white/50 hover:bg-white/75'}`}
+          aria-label={`Ir a imagen ${dotIndex + 1}`}
+          data-carousel-dot={dotIndex}
+        />
+      ))}
+    </div>
+  )}
+</div>
+
+<script>
+  // Carrusel de imágenes - Script reutilizable
+  function initCarousels() {
+    const carousels = document.querySelectorAll('[data-carousel]');
+    
+    carousels.forEach(carousel => {
+      // Evitar reinicializar carruseles ya configurados
+      if (carousel.hasAttribute('data-carousel-initialized')) return;
+      carousel.setAttribute('data-carousel-initialized', 'true');
+      
+      const track = carousel.querySelector('[data-carousel-track]') as HTMLElement;
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const prevBtn = carousel.querySelector('[data-carousel-prev]');
+      const nextBtn = carousel.querySelector('[data-carousel-next]');
+      const dots = carousel.querySelectorAll('[data-carousel-dot]');
+      
+      if (!track || slides.length === 0) return;
+      
+      let currentIndex = 0;
+      const totalSlides = slides.length;
+      
+      // Función para actualizar los dots
+      function updateDots(index: number) {
+        dots.forEach((dot, i) => {
+          const dotEl = dot as HTMLElement;
+          if (i === index) {
+            dotEl.classList.remove('bg-white/50', 'hover:bg-white/75');
+            dotEl.classList.add('bg-white');
+            // Buscar la clase de ancho activo (w-5 o w-6)
+            if (!dotEl.classList.contains('w-5') && !dotEl.classList.contains('w-6')) {
+              // Determinar qué clase de ancho usar basándose en la altura
+              if (dotEl.classList.contains('h-2')) {
+                dotEl.classList.add('w-5');
+              } else {
+                dotEl.classList.add('w-6');
+              }
+            }
+          } else {
+            dotEl.classList.remove('bg-white', 'w-5', 'w-6');
+            dotEl.classList.add('bg-white/50', 'hover:bg-white/75');
+          }
+        });
+      }
+      
+      // Función para ir a una slide específica
+      function goToSlide(index: number) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        
+        currentIndex = index;
+        const slideWidth = track.clientWidth;
+        track.scrollTo({
+          left: slideWidth * index,
+          behavior: 'smooth'
+        });
+        updateDots(index);
+      }
+      
+      // Event listeners para botones
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+      }
+      
+      // Event listeners para dots
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => goToSlide(index));
+      });
+      
+      // Detectar scroll manual para actualizar dots
+      let scrollTimeout: ReturnType<typeof setTimeout>;
+      track.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          const slideWidth = track.clientWidth;
+          const scrollPosition = track.scrollLeft;
+          const newIndex = Math.round(scrollPosition / slideWidth);
+          
+          if (newIndex !== currentIndex && newIndex >= 0 && newIndex < totalSlides) {
+            currentIndex = newIndex;
+            updateDots(currentIndex);
+          }
+        }, 50);
+      });
+      
+      // Soporte para navegación con teclado cuando el carrusel tiene foco
+      carousel.addEventListener('keydown', (e) => {
+        const keyEvent = e as KeyboardEvent;
+        if (keyEvent.key === 'ArrowLeft') {
+          goToSlide(currentIndex - 1);
+        } else if (keyEvent.key === 'ArrowRight') {
+          goToSlide(currentIndex + 1);
+        }
+      });
+    });
+  }
+  
+  // Inicializar carruseles cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', initCarousels);
+  
+  // También inicializar inmediatamente por si el DOM ya está listo
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initCarousels();
+  }
+  
+  // Reinicializar en navegación de Astro (View Transitions)
+  document.addEventListener('astro:page-load', initCarousels);
+</script>

@@ -8,7 +8,7 @@
 import { MessageCircle, Phone, ArrowRight } from 'lucide-astro';
 ---
 
-<section class="relative py-20 md:py-28 overflow-hidden">
+<section class="relative py-20 md:py-28 overflow-x-clip overflow-y-visible">
   <!-- Background Image with Overlay -->
   <div class="absolute inset-0">
     <img 
@@ -21,8 +21,8 @@ import { MessageCircle, Phone, ArrowRight } from 'lucide-astro';
   </div>
   
   <!-- Decorative Elements -->
-  <div class="absolute top-0 left-0 w-64 h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-  <div class="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+  <div class="absolute top-0 left-0 w-48 md:w-64 h-48 md:h-64 bg-white/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-amber-500/10 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl pointer-events-none"></div>
   
   <!-- Content -->
   <div class="container-custom relative z-10">

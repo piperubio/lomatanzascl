@@ -1,0 +1,129 @@
+---
+/**
+ * MotorhomeSection
+ * Sección de sitios para motorhome y camper con servicios premium
+ */
+
+import { Check, Caravan, Zap, Droplets, MessageCircle } from 'lucide-astro';
+import Carousel from './Carousel.astro';
+
+// Datos de Motorhome/Camping
+const motorhomeData = {
+  id: "motorhome",
+  title: "Sitios de Motorhome y Camper",
+  subtitle: "Camping Premium",
+  images: [
+    "/images/gallery/IMG-20230707-WA0026.jpg",
+    "/images/gallery/IMG-20230707-WA0021.jpg",
+    "/images/gallery/IMG-20230707-WA0023.jpg",
+    "/images/gallery/IMG-20230707-WA0022.jpg",
+    "/images/gallery/IMG-20230707-WA0025.jpg",
+    "/images/gallery/IMG-20230707-WA0024.jpg",
+    "/images/gallery/IMG-20230707-WA0019 (1).jpg",
+    "/images/gallery/IMG-20230707-WA0018.jpg",
+    "/images/gallery/IMG-20230707-WA0020.jpg"
+  ],
+  features: [
+    { text: "Hasta 5 personas", highlight: false },
+    { text: "Agua potable", highlight: true },
+    { text: "Conexión eléctrica 220V", highlight: true },
+    { text: "Baños y duchas calientes", highlight: false },
+    { text: "Quincho con parrilla", highlight: false },
+    { text: "Área exclusiva y tranquila", highlight: false },
+    { text: "Acceso a spa/jacuzzi", highlight: false }
+  ],
+  price: "$45.000",
+  priceNote: "por noche",
+  monthlyPrice: "$220.000",
+  monthlyNote: "por mes"
+};
+---
+
+<section id="motorhome" class="section-padding bg-gradient-to-b from-stone-100 to-stone-50">
+  <div class="container-custom">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center gap-2 text-amber-600 text-sm font-medium mb-3">
+        <Caravan class="w-4 h-4" />
+        <span>También disponible</span>
+      </div>
+      <h2 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-gray-900 mb-3">Sitios para Motorhome y Camper</h2>
+      <p class="text-gray-600 max-w-xl mx-auto">
+        Vive la experiencia vanlife con todas las comodidades en un entorno natural único
+      </p>
+    </div>
+
+    <!-- Layout 2 columnas -->
+    <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center max-w-6xl mx-auto">
+      
+      <!-- Galería de imágenes -->
+      <div>
+        <Carousel 
+          images={motorhomeData.images}
+          title={motorhomeData.title}
+          size="compact"
+        />
+      </div>
+      
+      <!-- Contenido -->
+      <div class="product-card rounded-2xl p-4 lg:p-8">
+        <!-- Highlights de servicios -->
+        <div class="flex flex-wrap gap-2 mb-5">
+          <div class="inline-flex items-center gap-2 bg-amber-100 text-amber-700 px-3 py-1.5 rounded-full text-sm font-medium">
+            <Zap class="w-4 h-4" />
+            Conexión 220V
+          </div>
+          <div class="inline-flex items-center gap-2 bg-cyan-100 text-cyan-700 px-3 py-1.5 rounded-full text-sm font-medium">
+            <Droplets class="w-4 h-4" />
+            Agua potable
+          </div>
+        </div>
+        
+        <!-- Features -->
+        <ul class="grid grid-cols-2 gap-2 mb-6">
+          {motorhomeData.features.map(feature => (
+            <li class="flex items-center gap-2 text-gray-600 text-sm">
+              <Check class={`w-4 h-4 shrink-0 ${feature.highlight ? 'text-amber-500' : 'text-green-500'}`} />
+              <span>{feature.text}</span>
+            </li>
+          ))}
+        </ul>
+        
+        <!-- Card de precios -->
+        <div class="bg-white rounded-xl p-5 shadow-md border border-stone-200 mb-6">
+          <div class="grid grid-cols-2 gap-2 lg:gap-4">
+            <div>
+              <span class="text-sm text-gray-500 block mb-1">Por noche</span>
+              <span class="text-2xl font-display font-bold text-amber-600">{motorhomeData.price}</span>
+            </div>
+            <div class="border-l border-stone-200 pl-4">
+              <span class="text-sm text-gray-500 block mb-1">Mensual</span>
+              <span class="text-2xl font-display font-bold text-amber-600">{motorhomeData.monthlyPrice}</span>
+            </div>
+          </div>
+          <p class="text-xs text-gray-500 mt-3">Hasta 5 personas. Persona adicional: $15.000</p>
+        </div>
+        
+        <!-- CTAs -->
+        <div class="flex flex-wrap gap-3">
+          <a 
+            href={`https://wa.me/56982892752?text=Hola!%20Quiero%20consultar%20disponibilidad%20para%20sitio%20de%20Motorhome`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-display font-semibold text-white bg-amber-500 hover:bg-amber-600 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-out"
+          >
+            <MessageCircle class="w-4 h-4" />
+            Consultar Disponibilidad
+          </a>
+          <button 
+            type="button"
+            onclick="document.getElementById('condiciones-modal')?.showModal()"
+            class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-display font-semibold border-2 border-amber-500 text-amber-600 bg-white hover:bg-amber-500 hover:text-white transition-all duration-300 ease-out"
+          >
+            Ver Condiciones
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
