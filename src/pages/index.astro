@@ -6,18 +6,18 @@ import CabinasSection from '../components/CabinasSection.astro';
 import MotorhomeSection from '../components/MotorhomeSection.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import CondicionesModal from '../components/CondicionesModal.astro';
-import { Check, MapPin, Mail, MessageCircle, Phone, ArrowRight, Waves, Sun, Trees, Star } from 'lucide-astro';
+import { Check, MapPin, Mail, MessageCircle, Phone, ArrowRight, Waves, Sun, Trees, Star, CreditCard } from 'lucide-astro';
 
 // SEO: Page-specific metadata
 const pageTitle = "Cabañas en Matanzas | Lomatanzas Family Lodge - Frente a la Playa";
-const pageDescription = "Arrienda cabañas en Playa de Matanzas, Litoral Central de Chile. Family Lodge con spa, jacuzzi y estacionamiento para motorhome. Reserva directo por WhatsApp.";
+const pageDescription = "Arrienda cabañas en Playa de Matanzas, Litoral Central de Chile. Family Lodge con tinajas y jacuzzi disponibles, estacionamiento para motorhome. Reserva directo por WhatsApp.";
 
 // Amenities con iconos y descripciones
 const amenities = [
   {
     icon: "/images/amenities/jacuzzi.png",
-    title: "Spa & Jacuzzi",
-    description: "Relájate después de un día de playa"
+    title: "Tinajas & Jacuzzi",
+    description: "Disponibles con costo adicional"
   },
   {
     icon: "/images/amenities/parrilla.png",
@@ -92,7 +92,7 @@ const nearbyPlaces = [
       
       <!-- Subtítulo con beneficios -->
       <p class="text-lg md:text-xl lg:text-2xl text-white max-w-3xl mx-auto mb-10 leading-relaxed animate-fade-in-up delay-500">
-        Family Lodge con spa, jacuzzi y estacionamiento para motorhome. 
+        Family Lodge con tinajas y jacuzzi disponibles, estacionamiento para motorhome. 
         <strong class="text-amber-300">Tu escape perfecto cerca al mar.</strong>
       </p>
       
@@ -217,6 +217,15 @@ const nearbyPlaces = [
               <div>
                 <span class="font-semibold text-white block">Cancelación gratuita</span>
                 <span class="text-cyan-100 text-sm">Con 15 días de anticipación</span>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 sm:col-span-2 justify-center">
+              <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0 mt-0.5">
+                <CreditCard class="w-4 h-4 text-amber-300" />
+              </div>
+              <div>
+                <span class="font-semibold text-white block">Tarjetas aceptadas</span>
+                <span class="text-cyan-100 text-sm">Débito y crédito</span>
               </div>
             </div>
           </div>

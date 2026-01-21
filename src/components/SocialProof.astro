@@ -5,7 +5,7 @@
  * Posicionado justo después del Hero para reforzar credibilidad
  */
 
-import { Users, MapPin, Calendar } from 'lucide-astro';
+import { Users, MapPin, Calendar, CreditCard } from 'lucide-astro';
 
 const stats = [
   {
@@ -25,6 +25,12 @@ const stats = [
     value: "5",
     label: "Min en auto a la playa",
     suffix: "min"
+  },
+  {
+    icon: CreditCard,
+    value: "Tarjetas",
+    label: "Débito y crédito",
+    suffix: ""
   }
 ];
 ---
@@ -32,7 +38,7 @@ const stats = [
 <section class="relative -mt-16 z-10 pb-8">
   <div class="container-custom">
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
-      <div class="grid grid-cols-3 gap-6 md:gap-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
         {stats.map((stat, index) => (
           <div 
             class="text-center group"
