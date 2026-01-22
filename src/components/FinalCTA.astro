@@ -6,16 +6,20 @@
  */
 
 import { MessageCircle, Phone, ArrowRight } from 'lucide-astro';
+import { Image } from 'astro:assets';
+import bgImage from "../assets/images/landscape/Foto-17-Lomatanzas-entorno-600x400.jpg";
 ---
 
 <section class="relative py-20 md:py-28 overflow-x-clip overflow-y-visible">
   <!-- Background Image with Overlay -->
   <div class="absolute inset-0">
-    <img 
-      src="/images/landscape/Foto-17-Lomatanzas-entorno-600x400.jpg" 
+    <Image 
+      src={bgImage} 
       alt="Vista de Lomatanzas" 
       class="w-full h-full object-cover"
       loading="lazy"
+      width={1200}
+      height={800}
     />
     <div class="absolute inset-0 bg-gradient-to-r from-cyan-900/95 via-cyan-800/90 to-teal-900/85"></div>
   </div>

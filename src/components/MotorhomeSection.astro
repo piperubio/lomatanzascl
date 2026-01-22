@@ -6,9 +6,12 @@
 
 import { Check, Caravan, Zap, Droplets, MessageCircle } from 'lucide-astro';
 import Carousel from './Carousel.astro';
+import type { ImageMetadata } from 'astro';
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>('../assets/images/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,WEBP}', { eager: true });
 
 // Datos de Motorhome/Camping
-const motorhomeData = {
+const motorhomeDataRaw = {
   id: "motorhome",
   title: "Sitios de Motorhome y Camper",
   subtitle: "Camping Premium",
@@ -30,12 +33,25 @@ const motorhomeData = {
     { text: "Baños y duchas calientes", highlight: false },
     { text: "Quincho con parrilla", highlight: false },
     { text: "Área exclusiva y tranquila", highlight: false },
-    { text: "Acceso a tinajas/jacuzzi", highlight: false }
+    { text: "Acceso a tinajas/jacuzzi", highlight: false },
+    { text: "Descarga aguas grises/negras", highlight: false }
   ],
   price: "$45.000",
   priceNote: "por noche",
   monthlyPrice: "$220.000",
   monthlyNote: "por mes"
+};
+
+const motorhomeData = {
+  ...motorhomeDataRaw,
+  images: motorhomeDataRaw.images.map(path => {
+    const assetPath = path.replace('/images/', '../assets/images/');
+    if (!allImages[assetPath]) {
+      console.warn(`Image not found: ${assetPath}`);
+      return path;
+    }
+    return allImages[assetPath].default;
+  })
 };
 ---
 

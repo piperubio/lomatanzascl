@@ -6,9 +6,12 @@
 
 import { Check, Home, Users, Sun, Sparkles, MessageCircle } from 'lucide-astro';
 import Carousel from './Carousel.astro';
+import type { ImageMetadata } from 'astro';
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>('../assets/images/**/*.{jpeg,jpg,png,gif,webp,JPEG,JPG,PNG,WEBP}', { eager: true });
 
 // Datos de las cabañas
-const cabins = [
+const cabinsRaw = [
   {
     id: "2dorm",
     title: "Cabaña de 2 Dormitorios",
@@ -63,6 +66,18 @@ const cabins = [
     priceNote: "por noche"
   }
 ];
+
+const cabins = cabinsRaw.map(cabin => ({
+  ...cabin,
+  images: cabin.images.map(path => {
+    const assetPath = path.replace('/images/', '../assets/images/');
+    if (!allImages[assetPath]) {
+      console.warn(`Image not found: ${assetPath}`);
+      return path;
+    }
+    return allImages[assetPath].default;
+  })
+}));
 ---
 
 <section id="cabanas" class="section-padding bg-gradient-to-b from-sand via-white to-sand">

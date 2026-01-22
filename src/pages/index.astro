@@ -7,6 +7,14 @@ import MotorhomeSection from '../components/MotorhomeSection.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 import CondicionesModal from '../components/CondicionesModal.astro';
 import { Check, MapPin, Mail, MessageCircle, Phone, ArrowRight, Waves, Sun, Trees, Star, CreditCard } from 'lucide-astro';
+import { Image } from 'astro:assets';
+
+// Import images
+import heroImage from '../assets/images/gallery/IMG-20220808-WA0026.jpg';
+import jacuzziIcon from '../assets/images/amenities/jacuzzi.png';
+import parrillaIcon from '../assets/images/amenities/parrilla.png';
+import mapaIcon from '../assets/images/theme/mapa.png';
+import motorhomeIcon from '../assets/images/amenities/motorhome.png';
 
 // SEO: Page-specific metadata
 const pageTitle = "Cabañas en Matanzas | Lomatanzas Family Lodge - Frente a la Playa";
@@ -15,22 +23,22 @@ const pageDescription = "Arrienda cabañas en Playa de Matanzas, Litoral Central
 // Amenities con iconos y descripciones
 const amenities = [
   {
-    icon: "/images/amenities/jacuzzi.png",
+    icon: jacuzziIcon,
     title: "Tinajas & Jacuzzi",
     description: "Disponibles con costo adicional"
   },
   {
-    icon: "/images/amenities/parrilla.png",
+    icon: parrillaIcon,
     title: "Quinchos Equipados",
     description: "Parrilla y mesón para asados"
   },
   {
-    icon: "/images/theme/mapa.png",
+    icon: mapaIcon,
     title: "Entorno Natural",
     description: "Senderos y vistas al mar"
   },
   {
-    icon: "/images/amenities/motorhome.png",
+    icon: motorhomeIcon,
     title: "Parking Motorhome",
     description: "Sitios con servicios completos"
   }
@@ -51,11 +59,13 @@ const nearbyPlaces = [
   <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
     <!-- Background Image -->
     <div class="absolute inset-0">
-      <img 
-        src="/images/gallery/IMG-20220808-WA0026.jpg" 
+      <Image 
+        src={heroImage} 
         alt="Vista aérea de Lomatanzas y la Playa de Matanzas" 
         class="w-full h-full object-cover"
         loading="eager"
+        width={1920}
+        height={1080}
       />
       <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
     </div>
@@ -151,11 +161,13 @@ const nearbyPlaces = [
             style={`animation-delay: ${index * 100}ms`}
           >
             <div class="relative inline-block mb-4">
-              <img 
+              <Image 
                 src={amenity.icon} 
                 class="h-16 w-auto mx-auto opacity-70 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110" 
                 alt={amenity.title}
                 loading="lazy"
+                width={64}
+                height={64}
               />
             </div>
             <h3 class="font-display font-semibold text-gray-900 mb-1">{amenity.title}</h3>

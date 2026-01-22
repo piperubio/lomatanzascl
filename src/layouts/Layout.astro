@@ -2,6 +2,10 @@
 import "../styles/global.css";
 import { Facebook, Instagram, Menu, X, Phone, Mail, MapPin } from 'lucide-astro';
 import Analytics from '@vercel/analytics/astro'
+import { Image } from 'astro:assets';
+import logoImage from "../assets/images/brand/logo_lomatanzas.png";
+import favicon180 from "../assets/images/brand/cropped-logo-180x180.png";
+import ogImageDefault from "../assets/images/gallery/IMG-20220808-WA0026.jpg";
 
 
 interface Props {
@@ -16,7 +20,7 @@ const {
 	title, 
 	description = "Cabañas y alojamiento en Playa de Matanzas, Litoral Central de Chile. Family Lodge con tinajas y jacuzzi disponibles, estacionamiento para motorhome. A pasos de la playa.",
 	keywords = "cabañas matanzas, alojamiento playa matanzas, cabañas litoral central, motorhome matanzas, arriendo cabañas playa chile, donde alojar matanzas, cabañas cerca de la playa",
-	image = "/images/gallery/IMG-20220808-WA0026.jpg",
+	image = ogImageDefault.src,
 	type = "website"
 } = Astro.props;
 
@@ -105,7 +109,14 @@ const schemaOrg = {
 		<header id="main-header" class="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
 			<div class="container-custom py-4 flex justify-between items-center">
 				<a href="/" class="flex items-center gap-2">
-					<img src="/images/brand/logo_lomatanzas.png" alt="Lomatanzas Family Lodge - Cabañas en Matanzas" class="h-12 w-auto" />
+					<Image 
+						src={logoImage} 
+						alt="Lomatanzas Family Lodge - Cabañas en Matanzas" 
+						class="h-12 w-auto"
+						width={200}
+						height={48}
+						loading="eager"
+					/>
 				</a>
 				
 				<!-- Desktop Navigation -->
@@ -156,7 +167,13 @@ const schemaOrg = {
 				<div class="grid md:grid-cols-4 gap-8 mb-12">
 					<!-- Brand -->
 					<div class="md:col-span-1">
-						<img src="/images/brand/cropped-logo-180x180.png" alt="Lomatanzas" class="h-12 w-auto mb-4" />
+						<Image 
+							src={favicon180} 
+							alt="Lomatanzas" 
+							class="h-12 w-auto mb-4"
+							width={180}
+							height={180}
+						/>
 						<p class="text-sm leading-relaxed">
 							Tu refugio familiar en la Playa de Matanzas. Cabañas equipadas, tinajas y jacuzzi disponibles, estacionamiento para motorhome.
 						</p>
