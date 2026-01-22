@@ -13,6 +13,7 @@
     "@vercel/analytics": "^1.6.1",
     "astro": "^5.16.11",
     "lucide-astro": "^0.556.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.18"
   }
 }
